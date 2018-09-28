@@ -1,17 +1,14 @@
-#include <cstdint>
 #include <string>
 #include <sstream>
-
-using Measure = int64_t;
+#include "abstract_chart_object.h"
 
 template <typename T>
-struct AbstractChartOption
+struct AbstractChartOption : public AbstractChartObject
 {
 protected:
     AbstractChartOption(Measure pos, T value);
 
 public:
-    Measure pos;
     T value;
     virtual ~AbstractChartOption() = 0;
     std::string getValueString() const;
@@ -19,7 +16,7 @@ public:
 
 template <typename T>
 AbstractChartOption<T>::AbstractChartOption(Measure pos, T value) :
-    pos(pos),
+    AbstractChartObject(pos),
     value(value)
 {
 }
