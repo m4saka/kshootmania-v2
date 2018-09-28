@@ -4,5 +4,5 @@ struct AbstractMusicalSegment
 {
 public:
     Measure length;
-	explicit MusicalNote(Measure length = 0) : length(length) {}
+	explicit AbstractMusicalSegment(Measure length = 0) : length(length) {}
 }
