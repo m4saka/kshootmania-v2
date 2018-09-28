@@ -1,6 +1,6 @@
 #include <string>
 #include <sstream>
-#include "abstract_chart_object.h"
+#include "chart_object.h"
 
 template <typename T>
 struct AbstractChartOption : public AbstractChartObject
