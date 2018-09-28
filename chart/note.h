@@ -4,11 +4,11 @@
 #include "musical_note.h"
 #include "note_judgment.h"
 
-struct AbstractNote : public AbstractMusicalNote
+struct AbstractNote : public AbstractMusicalSegment
 {
 protected:
     std::map<Measure, NoteJudgment> m_judgments;
 
 public:
-    explicit Note(Measure length = 0) : AbstractMusicalNote(length) {}
+    explicit Note(Measure length = 0) : AbstractMusicalSegment(length) {}
 }

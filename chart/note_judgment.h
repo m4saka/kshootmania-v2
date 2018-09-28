@@ -1,6 +1,6 @@
 #include "musical_note.h"
 
-struct NoteJudgment : public AbstractMusicalNote
+struct NoteJudgment : public AbstractMusicalSegment
 {
 public:
     enum class Result

@@ -1,6 +1,6 @@
 #include "beat_map.h"
 
-struct AbstractMusicalNote
+struct AbstractMusicalSegment
 {
 public:
     Measure length;
