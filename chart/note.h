@@ -1,0 +1,14 @@
+#include <map>
+
+#include "beat_map.h"
+#include "musical_note.h"
+#include "note_judgment.h"
+
+struct AbstractNote : public AbstractMusicalNote
+{
+protected:
+    std::map<Measure, NoteJudgment> m_judgments;
+
+public:
+    explicit Note(Measure length = 0) : AbstractMusicalNote(length) {}
+}
