@@ -1,3 +1,5 @@
+#pragma once
+
 #include "beat_map.h"
 
 struct AbstractMusicalSegment
