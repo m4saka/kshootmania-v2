@@ -3,7 +3,7 @@
 #include <map>
 
 #include "beat_map.h"
-#include "musical_note.h"
+#include "musical_segment.h"
 #include "note_judgment.h"
 
 struct AbstractNote : public AbstractMusicalSegment

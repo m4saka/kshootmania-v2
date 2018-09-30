@@ -1,6 +1,6 @@
 #pragma once
 
-#include "musical_note.h"
+#include "musical_segment.h"
 
 struct NoteJudgment : public AbstractMusicalSegment
 {
