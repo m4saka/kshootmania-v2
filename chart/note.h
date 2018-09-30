@@ -12,4 +12,4 @@ protected:
 public:
     explicit AbstractNote(Measure length = 0) : AbstractMusicalSegment(length) {}
     virtual ~AbstractNote() = default;
-}
+};
