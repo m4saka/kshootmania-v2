@@ -5,7 +5,7 @@
 #include <cstddef>
 #include <unordered_map>
 
-struct ChartMetaData
+class ChartMetaData
 {
 private:
     std::unordered_map<std::string, std::string> m_params;
