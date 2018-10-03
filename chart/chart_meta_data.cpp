@@ -2,6 +2,7 @@
 #include <cassert>
 #include <vector>
 #include <fstream>
+#include <sstream>
 
 ChartMetaData::ChartMetaData(const std::string & filename)
 {
@@ -84,4 +85,11 @@ std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
     os << std::flush;
 
     return os;
+}
+
+std::string ChartMetaData::toString() const
+{
+    std::ostringstream oss;
+    oss << *this;
+    return oss.str();
 }

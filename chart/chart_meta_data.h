@@ -35,4 +35,6 @@ public:
     }
 
     friend std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj);
+
+    std::string toString() const;
 };
