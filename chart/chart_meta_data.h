@@ -10,6 +10,7 @@ private:
     std::unordered_map<std::string, std::string> m_params;
 
 public:
+    ChartMetaData() = default;
     ChartMetaData(const std::string & filename);
 
     std::size_t size() const
