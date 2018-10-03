@@ -68,7 +68,7 @@ std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
     {
         if (obj.count(key))
         {
-            os << key << "=" << obj.at(key) << "\n";
+            os << key << "=" << obj.at(key) << "\r\n";
             finished[key] = true;
         }
     }
@@ -78,7 +78,7 @@ std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
     {
         if (finished.count(param.first) == 0)
         {
-            os << param.first << "=" << param.second << "\n";
+            os << param.first << "=" << param.second << "\r\n";
         }
     }
 
