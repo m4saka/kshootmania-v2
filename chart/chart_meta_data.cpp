@@ -30,7 +30,7 @@ ChartMetaData::ChartMetaData(const std::string & filename)
         }
 
         std::string key = line.substr(0, equalPos);
-        std::string value = line.substr(equalPos);
+        std::string value = line.substr(equalPos + 1);
         m_params[key] = value;
     }
 
