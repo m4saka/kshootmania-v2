@@ -1,14 +1,16 @@
 #include "chart_meta_data.h"
+#include <cassert>
 #include <vector>
-#include <ifstream>
+#include <fstream>
 
-ChartMetaData(const std::string & filename)
+ChartMetaData::ChartMetaData(const std::string & filename)
 {
     std::ifstream ifs(filename);
     std::string line;
     bool barLineExists = false;
     while (std::getline(ifs, line))
     {
+        std::cout << line;
         if (line == "--")
         {
             // Chart meta data is before first bar line ("--")
@@ -32,11 +34,11 @@ ChartMetaData(const std::string & filename)
     assert(barLineExists);
 }
 
-friend std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
+std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
 {
     // Output order-sensitive keys
     std::unordered_map<std::string, bool> finished;
-    foreach (auto && key : {
+    for (auto && key : {
         "title",
         "artist",
         "effect",
@@ -62,7 +64,7 @@ friend std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
     }
 
     // Output remaining keys
-    foreach (auto && param : obj.m_params)
+    for (auto && param : obj.m_params)
     {
         if (finished.count(param.first) == 0)
         {
