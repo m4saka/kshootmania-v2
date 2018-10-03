@@ -12,7 +12,7 @@ private:
 
 public:
     ChartMetaData() = default;
-    ChartMetaData(const std::string & filename);
+    explicit ChartMetaData(const std::string & filename);
 
     std::size_t size() const
     {
