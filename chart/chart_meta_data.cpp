@@ -8,8 +8,13 @@ ChartMetaData::ChartMetaData(const std::string & filename)
     std::ifstream ifs(filename);
     std::string line;
     bool barLineExists = false;
-    while (std::getline(ifs, line))
+    while (std::getline(ifs, line, '\n'))
     {
+        // Eliminate CR
+        if(!line.empty() && *line.rbegin() == '\r') {
+            line.pop_back();
+        }
+
         if (line == "--")
         {
             // Chart meta data is before first bar line ("--")
