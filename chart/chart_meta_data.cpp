@@ -1,5 +1,5 @@
 #include "chart_meta_data.h"
-#include <string>
+#include <vector>
 #include <ifstream>
 
 ChartMetaData(const std::string & filename)
@@ -30,4 +30,47 @@ ChartMetaData(const std::string & filename)
 
     // .ksh files should have at least one bar line ("--")
     assert(barLineExists);
+}
+
+friend std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
+{
+    // Output order-sensitive keys
+    std::unordered_map<std::string, bool> finished;
+    foreach (auto && key : {
+        "title",
+        "artist",
+        "effect",
+        "jacket",
+        "illustrator",
+        "difficulty",
+        "level",
+        "t",
+        "m",
+        "mvol",
+        "o",
+        "bg",
+        "layer",
+        "po",
+        "plength",
+    })
+    {
+        if (obj.count(key))
+        {
+            os << key << "=" << obj.at(key) << "\n";
+            finished[key] = true;
+        }
+    }
+
+    // Output remaining keys
+    foreach (auto && param : obj.m_params)
+    {
+        if (finished.count(param.first) == 0)
+        {
+            os << param.first << "=" << param.second << "\n";
+        }
+    }
+
+    os << std::flush;
+
+    return os;
 }

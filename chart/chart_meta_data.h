@@ -1,5 +1,6 @@
 #pragma once
 
+#include <iostream>
 #include <string>
 #include <cstddef>
 #include <unordered_map>
@@ -32,4 +33,6 @@ public:
     {
         return m_params[key];
     }
+
+    friend std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj);
 };
