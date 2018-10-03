@@ -6,6 +6,11 @@
 ChartMetaData::ChartMetaData(const std::string & filename)
 {
     std::ifstream ifs(filename);
+
+    // Eliminate UTF-8 BOM
+    // TODO: Convert Shift-JIS (or other encodes) to UTF-8 if BOM doesn't exist
+    ifs.seekg(3, std::ios_base::beg);
+
     std::string line;
     bool barLineExists = false;
     while (std::getline(ifs, line, '\n'))
