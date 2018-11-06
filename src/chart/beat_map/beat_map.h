@@ -20,7 +20,7 @@ private:
 
 public:
     explicit BeatMap(double tempo) : BeatMap({ { 0, tempo } }) {}
-    explicit BeatMap(const std::map<Measure, double> & tempoChanges = { { 0, tempo } },
+    explicit BeatMap(const std::map<Measure, double> & tempoChanges = { { 0, 120.0 } },
         const std::map<int, TimeSignature> & timeSignatureChanges = { { 0, TimeSignature{ 4, 4 } } });
     Ms measureToMs(Measure measure) const;
     Measure msToMeasure(Ms ms) const;
