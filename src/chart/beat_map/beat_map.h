@@ -5,10 +5,6 @@
 
 #include "time_signature.h"
 
-// Musical time (UNIT_MEASURE = one measure)
-using Measure = int64_t;
-constexpr Measure UNIT_MEASURE = 96000;
-
 // Millisecond
 using Ms = double;
 
