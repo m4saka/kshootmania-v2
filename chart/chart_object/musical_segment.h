@@ -1,6 +1,6 @@
 #pragma once
 
-#include "beat_map.h"
+#include "../beat_map/beat_map.h"
 
 struct AbstractMusicalSegment
 {

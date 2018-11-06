@@ -3,10 +3,10 @@
 #include <vector>
 #include <map>
 
-#include "beat_map.h"
-#include "bt_note.h"
-#include "fx_note.h"
-#include "laser_note.h"
+#include "beat_map/beat_map.h"
+#include "note/bt_note.h"
+#include "note/fx_note.h"
+#include "note/laser_note.h"
 
 class Chart
 {
