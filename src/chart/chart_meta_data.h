@@ -9,9 +9,10 @@ class ChartMetaData
 {
 private:
     std::unordered_map<std::string, std::string> m_params;
+    bool m_isUTF8;
 
 public:
-    ChartMetaData() = default;
+    ChartMetaData() : m_isUTF8(true) {}
     explicit ChartMetaData(const std::string & filename);
 
     std::size_t size() const
@@ -37,4 +38,9 @@ public:
     friend std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj);
 
     std::string toString() const;
+
+    bool isUTF8() const
+    {
+        return m_isUTF8;
+    }
 };

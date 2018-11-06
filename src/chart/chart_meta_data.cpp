@@ -1,4 +1,4 @@
-#include "chart_meta_data.h"
+﻿#include "chart_meta_data.h"
 #include <cassert>
 #include <vector>
 #include <fstream>
@@ -9,8 +9,18 @@ ChartMetaData::ChartMetaData(const std::string & filename)
     std::ifstream ifs(filename);
 
     // Eliminate UTF-8 BOM
-    // TODO: Convert Shift-JIS (or other encodes) to UTF-8 if BOM doesn't exist
-    ifs.seekg(3, std::ios_base::beg);
+    std::string firstLine;
+    std::getline(ifs, firstLine, '\n');
+    if (firstLine.length() >= 3 && firstLine.substr(0, 3) == "\xEF\xBB\xBF")
+    {
+        m_isUTF8 = true;
+        ifs.seekg(3, std::ios_base::beg);
+    }
+    else
+    {
+        m_isUTF8 = false;
+        ifs.seekg(0, std::ios_base::beg);
+    }
 
     std::string line;
     bool barLineExists = false;
