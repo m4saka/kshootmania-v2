@@ -50,7 +50,9 @@ std::ostream & operator<<(std::ostream & os, const ChartMetaData & obj)
     std::unordered_map<std::string, bool> finished;
     for (auto && key : {
         "title",
+        "title_img",
         "artist",
+        "artist_img",
         "effect",
         "jacket",
         "illustrator",
