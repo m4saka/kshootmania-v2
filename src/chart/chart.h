@@ -4,9 +4,9 @@
 #include <map>
 
 #include "beat_map/beat_map.h"
-#include "note/bt_note.h"
-#include "note/fx_note.h"
-#include "note/laser_note.h"
+#include "chart_object/bt_note.h"
+#include "chart_object/fx_note.h"
+#include "chart_object/laser_note.h"
 
 class Chart
 {
