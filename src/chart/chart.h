@@ -25,6 +25,8 @@ public:
 
     explicit Chart(const std::string & filename);
 
+    virtual ~Chart() = default;
+
     std::string toString() const;
 
     bool isUTF8() const

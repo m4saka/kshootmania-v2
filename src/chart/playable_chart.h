@@ -4,12 +4,14 @@
 #include <vector>
 #include <map>
 
+#include "chart.h"
 #include "beat_map/beat_map.h"
 #include "chart_object/bt_note.h"
 #include "chart_object/fx_note.h"
 #include "chart_object/laser_note.h"
 
-class ChartBody
+// Chart (header & body)
+class PlayableChart : public Chart
 {
 private:
     const BeatMap m_beatMap;
@@ -18,5 +20,5 @@ private:
     const std::vector<std::multimap<Measure, LaserNote> > m_laserLanes;
 
 public:
-    ChartBody(const std::string & filename) {/* TODO: Loading chart */};
+    PlayableChart(const std::string & filename);
 };
