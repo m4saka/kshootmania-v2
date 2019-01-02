@@ -14,10 +14,13 @@
 class PlayableChart : public Chart
 {
 private:
+    template <class Note>
+    using Lane = std::multimap<Measure, Note>
+
     const BeatMap m_beatMap;
-    const std::vector<std::multimap<Measure, BTNote> > m_btLanes;
-    const std::vector<std::multimap<Measure, FXNote> > m_fxLanes;
-    const std::vector<std::multimap<Measure, LaserNote> > m_laserLanes;
+    const std::vector<Lane<BTNote> > m_btLanes;
+    const std::vector<Lane<FXNote> > m_fxLanes;
+    const std::vector<Lane<LaserNote> > m_laserLanes;
 
 public:
     PlayableChart(const std::string & filename);
