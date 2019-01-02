@@ -17,12 +17,13 @@ protected:
     const std::string m_filename;
     const std::string m_fileDirectoryPath;
     std::ifstream m_ifs;
+    Chart(const std::string & filename, bool keepFileStreamOpen);
 
 public:
     // Chart meta data
     const std::unordered_map<std::string, std::string> metaData;
 
-    explicit Chart(const std::string & filename, bool keepFileStreamOpen = false);
+    explicit Chart(const std::string & filename);
 
     std::string toString() const;
 

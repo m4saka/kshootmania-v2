@@ -59,6 +59,10 @@ Chart::Chart(const std::string & filename, bool keepFileStreamOpen)
     }
 }
 
+Chart::Chart(const std::string & filename) : Chart(filename, false)
+{
+}
+
 std::string Chart::toString() const
 {
     std::ostringstream oss;
