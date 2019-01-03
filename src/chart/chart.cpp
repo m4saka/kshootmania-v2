@@ -39,6 +39,12 @@ Chart::Chart(const std::string & filename, bool keepFileStreamOpen)
             break;
         }
 
+        // Skip comments
+        if (line[0] == ';' || line.substr(0, 2) == "//")
+        {
+            continue;
+        }
+
         auto equalPos = line.find_first_of('=');
         if (equalPos == std::string::npos)
         {
