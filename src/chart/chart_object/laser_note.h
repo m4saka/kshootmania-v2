@@ -5,7 +5,9 @@
 struct LaserNote final : public AbstractNote
 {
 public:
-    double start;
-    double end;
-    LaserNote(Measure length, double start, double end);
+    double startX;
+    double endX;
+    LaserNote(Measure length, double startX, double endX);
+
+    static int charToLaserX(unsigned char c);
 };

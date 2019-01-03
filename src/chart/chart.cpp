@@ -1,6 +1,7 @@
 #include "chart.h"
 
 #include <sstream>
+#include <cassert>
 
 Chart::Chart(const std::string & filename, bool keepFileStreamOpen)
     : m_filename(filename)
@@ -10,24 +11,24 @@ Chart::Chart(const std::string & filename, bool keepFileStreamOpen)
 
     // Eliminate UTF-8 BOM
     std::string firstLine;
-    std::getline(ifs, firstLine, '\n');
+    std::getline(m_ifs, firstLine, '\n');
     if (firstLine.length() >= 3 && firstLine.substr(0, 3) == "\xEF\xBB\xBF")
     {
         m_isUTF8 = true;
-        ifs.seekg(3, std::ios_base::beg);
+        m_ifs.seekg(3, std::ios_base::beg);
     }
     else
     {
         m_isUTF8 = false;
-        ifs.seekg(0, std::ios_base::beg);
+        m_ifs.seekg(0, std::ios_base::beg);
     }
 
     std::string line;
     bool barLineExists = false;
-    while (std::getline(ifs, line, '\n'))
+    while (std::getline(m_ifs, line, '\n'))
     {
         // Eliminate CR
-        if(!line.empty() && *line.rbegin() == '\r') {
+        if(!line.empty() && *line.crbegin() == '\r') {
             line.pop_back();
         }
 
@@ -107,5 +108,5 @@ std::string Chart::toString() const
 
     oss << std::flush;
 
-    return oss;
+    return oss.str();
 }

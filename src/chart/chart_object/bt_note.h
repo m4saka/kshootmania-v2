@@ -5,5 +5,8 @@
 struct BTNote final : public AbstractNote
 {
 public:
-    explicit BTNote(Measure length = 0) : AbstractNote(length) {}
+    explicit BTNote(Measure length)
+        : AbstractNote(length)
+    {
+    }
 };

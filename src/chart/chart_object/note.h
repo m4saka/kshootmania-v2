@@ -12,6 +12,6 @@ protected:
     std::map<Measure, NoteJudgment> m_judgments;
 
 public:
-    explicit AbstractNote(Measure length = 0) : AbstractMusicalSegment(length) {}
+    explicit AbstractNote(Measure length) : AbstractMusicalSegment(length) {}
     virtual ~AbstractNote() = default;
 };

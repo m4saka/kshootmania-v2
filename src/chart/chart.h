@@ -4,9 +4,6 @@
 #include <unordered_map>
 #include <fstream>
 
-#include "chart_meta_data.h"
-#include "chart_body.h"
-
 // Chart (header)
 class Chart
 {
@@ -21,7 +18,7 @@ protected:
 
 public:
     // Chart meta data
-    const std::unordered_map<std::string, std::string> metaData;
+    std::unordered_map<std::string, std::string> metaData;
 
     explicit Chart(const std::string & filename);
 

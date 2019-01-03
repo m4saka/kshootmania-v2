@@ -10,17 +10,20 @@
 #include "chart_object/fx_note.h"
 #include "chart_object/laser_note.h"
 
+template <class Note>
+using Lane = std::multimap<Measure, Note>;
+
 // Chart (header & body)
 class PlayableChart : public Chart
 {
 private:
-    template <class Note>
-    using Lane = std::multimap<Measure, Note>
+    BeatMap m_beatMap;
+    std::vector<Lane<BTNote> > m_btLanes;
+    std::vector<Lane<FXNote> > m_fxLanes;
+    std::vector<Lane<LaserNote> > m_laserLanes;
 
-    const BeatMap m_beatMap;
-    const std::vector<Lane<BTNote> > m_btLanes;
-    const std::vector<Lane<FXNote> > m_fxLanes;
-    const std::vector<Lane<LaserNote> > m_laserLanes;
+    bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, std::string value);
+    bool insertTimeSignatureChange(std::map<int, TimeSignature> & timeSignatureChanges, Measure pos, std::string value);
 
 public:
     PlayableChart(const std::string & filename);
