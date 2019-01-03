@@ -16,17 +16,17 @@ constexpr std::size_t BLOCK_LASER = 2;
 
 bool isChartLine(const std::string & line)
 {
-	return line.find(BLOCK_SEPARATOR) != std::string::npos;
+    return line.find(BLOCK_SEPARATOR) != std::string::npos;
 }
 
 bool isOptionLine(const std::string & line)
 {
-	return line.find(BLOCK_SEPARATOR) != std::string::npos;
+    return line.find(BLOCK_SEPARATOR) != std::string::npos;
 }
 
 bool isBarLine(const std::string & line)
 {
-	return line == MEASURE_SEPARATOR;
+    return line == MEASURE_SEPARATOR;
 }
 
 std::pair<std::string, std::string> splitOptionLine(const std::string optionLine)
@@ -241,10 +241,10 @@ PlayableChart::PlayableChart(const std::string & filename)
                             }
                         }
                     }
-					++laneCount;
+                    ++laneCount;
                 }
             }
-			chartLines.clear();
+            chartLines.clear();
         }
     }
 

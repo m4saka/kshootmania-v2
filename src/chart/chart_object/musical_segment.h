@@ -6,6 +6,6 @@ struct AbstractMusicalSegment
 {
 public:
     Measure length;
-	explicit AbstractMusicalSegment(Measure length = 0) : length(length) {}
+    explicit AbstractMusicalSegment(Measure length = 0) : length(length) {}
     virtual ~AbstractMusicalSegment() = default;
 };
