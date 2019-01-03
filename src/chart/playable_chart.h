@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <map>
+#include <memory>
 
 #include "chart.h"
 #include "beat_map/beat_map.h"
@@ -17,7 +18,7 @@ using Lane = std::multimap<Measure, Note>;
 class PlayableChart : public Chart
 {
 private:
-    BeatMap m_beatMap;
+    std::unique_ptr<BeatMap> m_beatMap;
     std::vector<Lane<BTNote> > m_btLanes;
     std::vector<Lane<FXNote> > m_fxLanes;
     std::vector<Lane<LaserNote> > m_laserLanes;

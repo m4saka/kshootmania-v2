@@ -114,6 +114,10 @@ PlayableChart::PlayableChart(const std::string & filename)
     {
         insertTimeSignatureChange(timeSignatureChanges, 0, metaData.at("beat"));
     }
+    else
+    {
+        timeSignatureChanges[0] = {4, 4};
+    }
 
     // Buffers
     // (needed because actual addition cannot come before the measure value calculation)
@@ -249,4 +253,6 @@ PlayableChart::PlayableChart(const std::string & filename)
     }
 
     m_ifs.close();
+
+    m_beatMap = std::make_unique<BeatMap>(tempoChanges, timeSignatureChanges);
 }
