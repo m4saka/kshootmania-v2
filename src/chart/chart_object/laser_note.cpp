@@ -2,11 +2,26 @@
 
 constexpr int LASER_X_MAX = 1000;
 
-LaserNote::LaserNote(Measure length, double startX, double endX)
+LaserNote::LaserNote(Measure length, double startX, double endX, Measure posForJudgmentAlignment, bool halvesCombo)
     : AbstractNote(length)
     , startX(startX)
     , endX(endX)
 {
+    Measure judgmentStart = (posForJudgmentAlignment + judgmentInterval(halvesCombo) - 1) / judgmentInterval(halvesCombo) * judgmentInterval(halvesCombo) - posForJudgmentAlignment;
+    Measure judgmentEnd = length;
+
+    if (length <= UNIT_MEASURE / 32 && startX != endX) // Laser slam
+    {
+        m_judgments.emplace(0, NoteJudgment(length));
+    }
+    else
+    {
+        Measure interval = judgmentInterval(halvesCombo);
+        for (Measure pos = judgmentStart; pos < judgmentEnd; pos += interval)
+        {
+            m_judgments.emplace(pos, NoteJudgment(interval));
+        }
+    }
 }
 
 int LaserNote::charToLaserX(unsigned char c)

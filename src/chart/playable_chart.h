@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 #include <memory>
+#include <cstddef>
 
 #include "chart.h"
 #include "beat_map/beat_map.h"
@@ -23,9 +24,10 @@ private:
     std::vector<Lane<FXNote> > m_fxLanes;
     std::vector<Lane<LaserNote> > m_laserLanes;
 
-    bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, std::string value);
-    bool insertTimeSignatureChange(std::map<int, TimeSignature> & timeSignatureChanges, Measure pos, std::string value);
+    bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, const std::string & value);
 
 public:
     PlayableChart(const std::string & filename);
+
+    std::size_t comboCount() const;
 };

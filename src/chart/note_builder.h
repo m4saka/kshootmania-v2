@@ -14,6 +14,7 @@ class AbstractNoteBuilder
 protected:
     Measure m_preparedNotePos;
     Measure m_preparedNoteLength;
+    bool m_preparedNoteHalvesCombo;
     bool m_notePrepared;
 
 public:
@@ -37,7 +38,7 @@ public:
     void addPreparedNote();
 
     // Prepare a long BT note
-    void prepareNote(Measure pos, Measure length);
+    void prepareNote(Measure pos, bool halvesCombo);
 };
 
 class FXNoteBuilder : public AbstractNoteBuilder
@@ -52,10 +53,10 @@ public:
     void addPreparedNote();
 
     // Prepare a long FX note
-    void prepareNote(Measure pos, Measure length);
+    void prepareNote(Measure pos, bool halvesCombo);
 
     // Prepare a long FX note (for editor; split the note if audio effects are different)
-    void prepareNote(Measure pos, Measure length, const std::string & audioEffect);
+    void prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffect);
 };
 
 class LaserNoteBuilder : public AbstractNoteBuilder
@@ -70,5 +71,5 @@ public:
     void addPreparedNote(int preparedNoteLaserEndX);
 
     // Prepare a laser note
-    void prepareNote(Measure pos, Measure length, int laserStartX);
+    void prepareNote(Measure pos, bool halvesCombo, int laserStartX);
 };

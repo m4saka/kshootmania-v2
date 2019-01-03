@@ -30,18 +30,19 @@ void BTNoteBuilder::addPreparedNote()
 {
     if (m_notePrepared)
     {
-        m_lane.emplace(m_preparedNotePos, BTNote(m_preparedNoteLength));
+        m_lane.emplace(m_preparedNotePos, BTNote(m_preparedNoteLength, m_preparedNotePos, m_preparedNoteHalvesCombo));
         m_notePrepared = false;
     }
 }
 
-void BTNoteBuilder::prepareNote(Measure pos, Measure length)
+void BTNoteBuilder::prepareNote(Measure pos, bool halvesCombo)
 {
     if (!m_notePrepared)
     {
         m_notePrepared = true;
         m_preparedNotePos = pos;
-        m_preparedNoteLength = length;
+        m_preparedNoteLength = 0;
+        m_preparedNoteHalvesCombo = halvesCombo;
     }
 }
 
@@ -54,31 +55,33 @@ void FXNoteBuilder::addPreparedNote()
 {
     if (m_notePrepared)
     {
-        m_lane.emplace(m_preparedNotePos, FXNote(m_preparedNoteLength, m_preparedNoteAudioEffect));
+        m_lane.emplace(m_preparedNotePos, FXNote(m_preparedNoteLength, m_preparedNoteAudioEffect, m_preparedNotePos, m_preparedNoteHalvesCombo));
         m_notePrepared = false;
     }
 }
 
-void FXNoteBuilder::prepareNote(Measure pos, Measure length)
+void FXNoteBuilder::prepareNote(Measure pos, bool halvesCombo)
 {
     if (!m_notePrepared)
     {
         m_preparedNoteAudioEffect = ""; // Set long FX audio effect name to dummy
         m_notePrepared = true;
         m_preparedNotePos = pos;
-        m_preparedNoteLength = length;
+        m_preparedNoteLength = 0;
+        m_preparedNoteHalvesCombo = halvesCombo;
     }
 }
 
-void FXNoteBuilder::prepareNote(Measure pos, Measure length, const std::string & audioEffect)
+void FXNoteBuilder::prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffect)
 {
     if (!m_notePrepared && audioEffect != m_preparedNoteAudioEffect)
     {
         addPreparedNote();
-        m_preparedNoteAudioEffect = audioEffect;
         m_notePrepared = true;
         m_preparedNotePos = pos;
-        m_preparedNoteLength = length;
+        m_preparedNoteLength = 0;
+        m_preparedNoteHalvesCombo = halvesCombo;
+        m_preparedNoteAudioEffect = audioEffect;
     }
 }
 
@@ -91,15 +94,17 @@ void LaserNoteBuilder::addPreparedNote(int preparedNoteLaserEndX)
 {
     if (m_notePrepared)
     {
-        m_lane.emplace(m_preparedNotePos, LaserNote(m_preparedNoteLength, m_preparedNoteLaserStartX, preparedNoteLaserEndX));
+        m_lane.emplace(m_preparedNotePos,
+            LaserNote(m_preparedNoteLength, m_preparedNoteLaserStartX, preparedNoteLaserEndX, m_preparedNotePos, m_preparedNoteHalvesCombo));
         m_notePrepared = false;
     }
 }
 
-void LaserNoteBuilder::prepareNote(Measure pos, Measure length, int laserStartX)
+void LaserNoteBuilder::prepareNote(Measure pos, bool halvesCombo, int laserStartX)
 {
     m_notePrepared = true;
     m_preparedNotePos = pos;
-    m_preparedNoteLength = length;
+    m_preparedNoteLength = 0;
+    m_preparedNoteHalvesCombo = halvesCombo;
     m_preparedNoteLaserStartX = laserStartX;
 }
