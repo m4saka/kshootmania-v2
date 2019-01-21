@@ -48,5 +48,20 @@ public:
         return m_laserLanes.at(idx);
     }
 
+    const std::vector<Lane<BTNote>> & btLanes() const
+    {
+        return m_btLanes;
+    }
+
+    const std::vector<Lane<FXNote>> & fxLanes() const
+    {
+        return m_fxLanes;
+    }
+
+    const std::vector<Lane<LaserNote>> & laserLanes() const
+    {
+        return m_laserLanes;
+    }
+
     std::size_t comboCount() const;
 };

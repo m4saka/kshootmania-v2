@@ -22,4 +22,19 @@ public:
     {
         return m_laserLanes.at(idx);
     }
+
+    std::vector<Lane<BTNote>> & btLanes()
+    {
+        return m_btLanes;
+    }
+
+    std::vector<Lane<FXNote>> & fxLanes()
+    {
+        return m_fxLanes;
+    }
+
+    std::vector<Lane<LaserNote>> & laserLanes()
+    {
+        return m_laserLanes;
+    }
 };
