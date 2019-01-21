@@ -1,5 +1,17 @@
 #include "lane_spin.h"
+
 #include "../beat_map/time_signature.h"
+
+Measure kshLengthToMeasure(const std::string & str)
+{
+    // TODO: catch the exception from stoi
+    return std::stoll(str) * UNIT_MEASURE / 192;
+}
+
+std::string measureToKshLength(Measure measure)
+{
+    return std::to_string(measure * 192 / UNIT_MEASURE);
+}
 
 LaneSpin::LaneSpin(std::string strFromKsh)
 {
@@ -76,7 +88,32 @@ LaneSpin::LaneSpin(std::string strFromKsh)
     }
     else
     {
-        // TODO: catch the exception from stoi
-        length = std::stoi(strFromKsh.substr(2)) * UNIT_MEASURE / 192;
+        length = kshLengthToMeasure(strFromKsh.substr(2));
+    }
+}
+
+// TODO: Separate these ksh-specific methods
+std::string LaneSpin::toString() const
+{
+    if (direction == Direction::Unspecified)
+    {
+        return "";
+    }
+    else
+    {
+        switch (type)
+        {
+        case Type::Normal:
+            return std::string("@") + ((direction == Direction::Left) ? "(" : ")") + measureToKshLength(length);
+
+        case Type::Half:
+            return std::string("@") + ((direction == Direction::Left) ? "<" : ">") + measureToKshLength(length);
+
+        case Type::Swing:
+            return std::string("S") + ((direction == Direction::Left) ? "<" : ">") + measureToKshLength(length);
+
+        default:
+            return "";
+        }
     }
 }

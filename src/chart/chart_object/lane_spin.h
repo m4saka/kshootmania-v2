@@ -26,4 +26,6 @@ struct LaneSpin
     LaneSpin() : type(Type::NoSpin), direction(Direction::Unspecified), length(0) {}
     LaneSpin(Type type, Direction direction, Measure length) : type(type), direction(direction), length(length) {}
     explicit LaneSpin(std::string strFromKsh); // From .ksh spin string (example: "@(192")
+
+    std::string toString() const; // To .ksh spin string (example: "@(192")
 };
