@@ -15,21 +15,21 @@ public:
 
         if (length == 0)
         {
+            // Chip FX Note
             m_judgments.emplace(0, NoteJudgment());
+        }
+        else if (length <= oneJudgmentThreshold(halvesCombo))
+        {
+            // Long FX Note (too short to have multiple judgments)
+            m_judgments.emplace(0, NoteJudgment(length));
         }
         else
         {
-            if (length <= oneJudgmentThreshold(halvesCombo))
+            // Long FX Note (long enough to have multiple judgments)
+            Measure interval = judgmentInterval(halvesCombo);
+            for (Measure pos = judgmentStart; pos < judgmentEnd; pos += interval)
             {
-                m_judgments.emplace(0, NoteJudgment(length));
-            }
-            else
-            {
-                Measure interval = judgmentInterval(halvesCombo);
-                for (Measure pos = judgmentStart; pos < judgmentEnd; pos += interval)
-                {
-                    m_judgments.emplace(pos, NoteJudgment((pos > judgmentEnd - interval * 2) ? (judgmentEnd - pos) : interval));
-                }
+                m_judgments.emplace(pos, NoteJudgment((pos > judgmentEnd - interval * 2) ? (judgmentEnd - pos) : interval));
             }
         }
     }
