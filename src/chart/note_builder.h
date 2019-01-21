@@ -45,18 +45,18 @@ class FXNoteBuilder : public AbstractNoteBuilder
 {
 private:
     Lane<FXNote> & m_lane;
-    std::string m_preparedNoteAudioEffect;
+
+    // Only used in editor
+    std::string m_preparedNoteAudioEffectStr;
+    std::string m_preparedNoteAudioEffectParamStr;
 
 public:
     explicit FXNoteBuilder(Lane<FXNote> & lane);
 
     void addPreparedNote();
 
-    // Prepare a long FX note
-    void prepareNote(Measure pos, bool halvesCombo);
-
-    // Prepare a long FX note (for editor; split the note if audio effects are different)
-    void prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffect);
+    // Prepare a long FX note (in editor, notes are split if audio effects are different)
+    void prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffectStr = "", const std::string & audioEffectParamStr = "", bool isEditor = false);
 };
 
 class LaserNoteBuilder : public AbstractNoteBuilder

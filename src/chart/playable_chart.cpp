@@ -47,6 +47,32 @@ constexpr bool halvesCombo(double tempo)
     return tempo >= 256.0;
 }
 
+std::string kshLegacyFXCharToAudioEffect(unsigned char c)
+{
+    switch (c)
+    {
+    case 'S': return "Retrigger;8";
+    case 'V': return "Retrigger;12";
+    case 'T': return "Retrigger;16";
+    case 'W': return "Retrigger;24";
+    case 'U': return "Retrigger;32";
+    case 'G': return "Gate;4";
+    case 'H': return "Gate;8";
+    case 'K': return "Gate;12";
+    case 'I': return "Gate;16";
+    case 'L': return "Gate;24";
+    case 'J': return "Gate;32";
+    case 'F': return "Flanger";
+    case 'P': return "PitchShift";
+    case 'B': return "BitCrusher";
+    case 'Q': return "Phaser";
+    case 'X': return "Wobble;12";
+    case 'A': return "TapeStop";
+    case 'D': return "SideChain";
+    default:  return "";
+    }
+}
+
 bool PlayableChart::insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, const std::string & value)
 {
     if (value.find('-') == std::string::npos)
@@ -71,7 +97,7 @@ TimeSignature parseTimeSignature(std::string str)
     };
 }
 
-PlayableChart::PlayableChart(const std::string & filename)
+PlayableChart::PlayableChart(const std::string & filename, bool isEditor)
     : Chart(filename, true)
     , m_btLanes(4)
     , m_fxLanes(2)
@@ -98,6 +124,12 @@ PlayableChart::PlayableChart(const std::string & filename)
     {
         laserNoteBuilders.emplace_back(lane);
     }
+
+    // FX audio effect string ("fx-l=" or "fx-r=" in .ksh)
+    std::vector<std::string> currentFXAudioEffectStrs(m_fxLanes.size());
+
+    // FX audio effect parameters ("fx-l_param1=" or "fx-r_param1=" in .ksh; currently no "param2")
+    std::vector<std::string> currentFXAudioEffectParamStrs(m_fxLanes.size());
 
     // Insert the first tempo change
     double currentTempo = 120.0;
@@ -183,6 +215,22 @@ PlayableChart::PlayableChart(const std::string & filename)
                 currentNumerator = timeSignature.numerator;
                 currentDenominator = timeSignature.denominator;
             }
+            else if (option.first == "fx-l")
+            {
+                currentFXAudioEffectStrs[0] = option.second;
+            }
+            else if (option.first == "fx-r")
+            {
+                currentFXAudioEffectStrs[1] = option.second;
+            }
+            else if (option.first == "fx-l_param1")
+            {
+                currentFXAudioEffectParamStrs[0] = option.second;
+            }
+            else if (option.first == "fx-r_param1")
+            {
+                currentFXAudioEffectParamStrs[1] = option.second;
+            }
             else
             {
                 optionLines.emplace_back(chartLines.size(), option);
@@ -193,7 +241,7 @@ PlayableChart::PlayableChart(const std::string & filename)
             std::size_t resolution = chartLines.size();
             Measure linePosDiff = UNIT_MEASURE * currentNumerator / currentDenominator / resolution;
 
-            // Add options
+            // Add options that require their position
             for (auto && optionLine : optionLines)
             {
                 Measure pos = currentMeasure + linePosDiff * optionLine.first;
@@ -252,7 +300,16 @@ PlayableChart::PlayableChart(const std::string & filename)
                             fxNoteBuilders[laneCount].addPreparedNote();
                             break;
                         default:  // Long FX note
-                            fxNoteBuilders[laneCount].prepareNote(pos, halvesCombo(currentTempo));
+                            if (isEditor)
+                            {
+                                const std::string audioEffectStr = (buf[j] == '1') ? currentFXAudioEffectStrs[laneCount] : kshLegacyFXCharToAudioEffect(buf[j]);
+                                fxNoteBuilders[laneCount].prepareNote(pos, halvesCombo(currentTempo), audioEffectStr, currentFXAudioEffectParamStrs[laneCount], true);
+                            }
+                            else
+                            {
+                                fxNoteBuilders[laneCount].prepareNote(pos, halvesCombo(currentTempo));
+                                // TODO: Add audio effects independently for the game (because one FX note can have multiple audio effects)
+                            }
                             fxNoteBuilders[laneCount].extendPreparedNoteLength(linePosDiff);
                         }
                     }
@@ -293,6 +350,14 @@ PlayableChart::PlayableChart(const std::string & filename)
             }
             chartLines.clear();
             optionLines.clear();
+            for (auto && str : currentFXAudioEffectStrs)
+            {
+                str.clear();
+            }
+            for (auto && str : currentFXAudioEffectParamStrs)
+            {
+                str.clear();
+            }
             currentMeasure += UNIT_MEASURE * currentNumerator / currentDenominator;
             ++measureCount;
         }

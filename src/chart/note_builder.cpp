@@ -55,33 +55,21 @@ void FXNoteBuilder::addPreparedNote()
 {
     if (m_notePrepared)
     {
-        m_lane.emplace(m_preparedNotePos, FXNote(m_preparedNoteLength, m_preparedNoteAudioEffect, m_preparedNotePos, m_preparedNoteHalvesCombo));
+        m_lane.emplace(m_preparedNotePos, FXNote(m_preparedNoteLength, m_preparedNoteAudioEffectStr, m_preparedNoteAudioEffectParamStr, m_preparedNotePos, m_preparedNoteHalvesCombo));
         m_notePrepared = false;
     }
 }
 
-void FXNoteBuilder::prepareNote(Measure pos, bool halvesCombo)
+void FXNoteBuilder::prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffectStr, const std::string & audioEffectParamStr, bool isEditor)
 {
-    if (!m_notePrepared)
-    {
-        m_preparedNoteAudioEffect = ""; // Set long FX audio effect name to dummy
-        m_notePrepared = true;
-        m_preparedNotePos = pos;
-        m_preparedNoteLength = 0;
-        m_preparedNoteHalvesCombo = halvesCombo;
-    }
-}
-
-void FXNoteBuilder::prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffect)
-{
-    if (!m_notePrepared && audioEffect != m_preparedNoteAudioEffect)
+    if (!m_notePrepared && (!isEditor || audioEffectStr != m_preparedNoteAudioEffectStr || audioEffectParamStr != m_preparedNoteAudioEffectParamStr))
     {
         addPreparedNote();
         m_notePrepared = true;
         m_preparedNotePos = pos;
         m_preparedNoteLength = 0;
         m_preparedNoteHalvesCombo = halvesCombo;
-        m_preparedNoteAudioEffect = audioEffect;
+        m_preparedNoteAudioEffectStr = audioEffectStr;
     }
 }
 

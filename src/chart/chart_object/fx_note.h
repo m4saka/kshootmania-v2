@@ -7,8 +7,14 @@
 struct FXNote final : public AbstractNote
 {
 public:
-    explicit FXNote(Measure length, const std::string audioEffect = "", Measure posForJudgmentAlignment = 0, bool halvesCombo = false)
+    // Only used in editor
+    std::string audioEffectStr;
+    std::string audioEffectParamStr;
+
+    explicit FXNote(Measure length, const std::string audioEffectStr = "", const std::string audioEffectParamStr = "", Measure posForJudgmentAlignment = 0, bool halvesCombo = false)
         : AbstractNote(length)
+        , audioEffectStr(audioEffectStr)
+        , audioEffectParamStr(audioEffectParamStr)
     {
         Measure judgmentStart = ((posForJudgmentAlignment + judgmentInterval(halvesCombo) - 1) / judgmentInterval(halvesCombo) + 1) * judgmentInterval(halvesCombo) - posForJudgmentAlignment;
         Measure judgmentEnd = length - judgmentInterval(halvesCombo);

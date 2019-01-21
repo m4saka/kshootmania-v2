@@ -19,15 +19,19 @@ using Lane = std::multimap<Measure, Note>;
 class PlayableChart : public Chart
 {
 private:
+    bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, const std::string & value);
+
+protected:
     std::unique_ptr<BeatMap> m_beatMap;
     std::vector<Lane<BTNote>> m_btLanes;
     std::vector<Lane<FXNote>> m_fxLanes;
     std::vector<Lane<LaserNote>> m_laserLanes;
-
-    bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, const std::string & value);
+    PlayableChart(const std::string & filename, bool isEditor);
 
 public:
-    PlayableChart(const std::string & filename);
+    PlayableChart(const std::string & filename) : PlayableChart(filename, false) {}
+
+    virtual ~PlayableChart() = default;
 
     const Lane<BTNote> & btLane(std::size_t idx) const
     {
