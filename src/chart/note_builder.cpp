@@ -94,8 +94,16 @@ void LaserNoteBuilder::addPreparedNote(int preparedNoteLaserEndX)
 {
     if (m_notePrepared)
     {
-        m_lane.emplace(m_preparedNotePos,
-            LaserNote(m_preparedNoteLength, m_preparedNoteLaserStartX, preparedNoteLaserEndX, m_preparedNotePos, m_preparedNoteHalvesCombo));
+        m_lane.emplace(
+            m_preparedNotePos,
+            LaserNote(
+                m_preparedNoteLength,
+                m_preparedNoteLaserStartX,
+                preparedNoteLaserEndX,
+                m_preparedNotePos,
+                m_preparedNoteHalvesCombo,
+                m_preparedLaneSpin));
+
         m_notePrepared = false;
     }
 }
@@ -107,4 +115,10 @@ void LaserNoteBuilder::prepareNote(Measure pos, bool halvesCombo, int laserStart
     m_preparedNoteLength = 0;
     m_preparedNoteHalvesCombo = halvesCombo;
     m_preparedNoteLaserStartX = laserStartX;
+    m_preparedLaneSpin = LaneSpin();
+}
+
+void LaserNoteBuilder::prepareLaneSpin(const LaneSpin & laneSpin)
+{
+    m_preparedLaneSpin = laneSpin;
 }

@@ -2,10 +2,11 @@
 
 constexpr int LASER_X_MAX = 1000;
 
-LaserNote::LaserNote(Measure length, double startX, double endX, Measure posForJudgmentAlignment, bool halvesCombo)
+LaserNote::LaserNote(Measure length, double startX, double endX, Measure posForJudgmentAlignment, bool halvesCombo, const LaneSpin & laneSpin)
     : AbstractNote(length)
     , startX(startX)
     , endX(endX)
+    , laneSpin(laneSpin)
 {
     Measure judgmentStart = (posForJudgmentAlignment + judgmentInterval(halvesCombo) - 1) / judgmentInterval(halvesCombo) * judgmentInterval(halvesCombo) - posForJudgmentAlignment;
     Measure judgmentEnd = length;

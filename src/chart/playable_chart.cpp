@@ -209,11 +209,11 @@ PlayableChart::PlayableChart(const std::string & filename)
             // Add notes
             for (std::size_t i = 0; i < resolution; ++i)
             {
-                std::string buf = chartLines.at(i);
+                const std::string buf = chartLines.at(i);
                 std::size_t currentBlock = 0;
                 std::size_t laneCount = 0;
 
-                Measure pos = currentMeasure + linePosDiff * i;
+                const Measure pos = currentMeasure + linePosDiff * i;
 
                 for (std::size_t j = 0; j < buf.size(); ++j)
                 {
@@ -268,13 +268,24 @@ PlayableChart::PlayableChart(const std::string & filename)
                             laserNoteBuilders[laneCount].extendPreparedNoteLength(linePosDiff);
                             break;
                         default:
-                            int laserX = LaserNote::charToLaserX(buf[j]);
+                            const int laserX = LaserNote::charToLaserX(buf[j]);
                             if (laserX >= 0)
                             {
                                 laserNoteBuilders[laneCount].addPreparedNote(laserX);
                                 laserNoteBuilders[laneCount].prepareNote(pos, halvesCombo(currentTempo), laserX);
                                 laserNoteBuilders[laneCount].extendPreparedNoteLength(linePosDiff);
                             }
+                        }
+                    }
+                    else if (currentBlock == BLOCK_LASER && laneCount == 3) // Lane spin
+                    {
+                        // Create a lane spin from string
+                        const LaneSpin laneSpin(buf.substr(j));
+                        if (laneSpin.type != LaneSpin::Type::NoSpin && laneSpin.direction != LaneSpin::Direction::Unspecified)
+                        {
+                            // Assign to the laser note builder if valid
+                            const int laneIdx = (laneSpin.direction == LaneSpin::Direction::Left) ? 0 : 1;
+                            laserNoteBuilders[laneIdx].prepareLaneSpin(laneSpin);
                         }
                     }
                     ++laneCount;

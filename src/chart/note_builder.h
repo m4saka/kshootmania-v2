@@ -64,6 +64,7 @@ class LaserNoteBuilder : public AbstractNoteBuilder
 private:
     Lane<LaserNote> & m_lane;
     int m_preparedNoteLaserStartX;
+    LaneSpin m_preparedLaneSpin;
 
 public:
     explicit LaserNoteBuilder(Lane<LaserNote> & lane);
@@ -72,4 +73,7 @@ public:
 
     // Prepare a laser note
     void prepareNote(Measure pos, bool halvesCombo, int laserStartX);
+
+    // Prepare a lane spin
+    void prepareLaneSpin(const LaneSpin & laneSpin);
 };
