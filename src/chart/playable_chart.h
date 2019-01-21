@@ -20,14 +20,29 @@ class PlayableChart : public Chart
 {
 private:
     std::unique_ptr<BeatMap> m_beatMap;
-    std::vector<Lane<BTNote> > m_btLanes;
-    std::vector<Lane<FXNote> > m_fxLanes;
-    std::vector<Lane<LaserNote> > m_laserLanes;
+    std::vector<Lane<BTNote>> m_btLanes;
+    std::vector<Lane<FXNote>> m_fxLanes;
+    std::vector<Lane<LaserNote>> m_laserLanes;
 
     bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, const std::string & value);
 
 public:
     PlayableChart(const std::string & filename);
+
+    const Lane<BTNote> & btLane(std::size_t idx) const
+    {
+        return m_btLanes.at(idx);
+    }
+
+    const Lane<FXNote> & fxLane(std::size_t idx) const
+    {
+        return m_fxLanes.at(idx);
+    }
+
+    const Lane<LaserNote> & laserLane(std::size_t idx) const
+    {
+        return m_laserLanes.at(idx);
+    }
 
     std::size_t comboCount() const;
 };
