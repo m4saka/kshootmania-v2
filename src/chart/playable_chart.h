@@ -11,6 +11,7 @@
 #include "chart_object/bt_note.h"
 #include "chart_object/fx_note.h"
 #include "chart_object/laser_note.h"
+#include "chart_object/line_graph.h"
 
 template <class Note>
 using Lane = std::multimap<Measure, Note>;
@@ -26,6 +27,9 @@ protected:
     std::vector<Lane<BTNote>> m_btLanes;
     std::vector<Lane<FXNote>> m_fxLanes;
     std::vector<Lane<LaserNote>> m_laserLanes;
+    LineGraph m_topLaneZooms;
+    LineGraph m_bottomLaneZooms;
+    LineGraph m_sideLaneZooms;
     PlayableChart(const std::string & filename, bool isEditor);
 
 public:
@@ -61,6 +65,21 @@ public:
     const std::vector<Lane<LaserNote>> & laserLanes() const
     {
         return m_laserLanes;
+    }
+
+    const LineGraph & topLaneZooms() const
+    {
+        return m_topLaneZooms;
+    }
+
+    const LineGraph & bottomLaneZooms() const
+    {
+        return m_bottomLaneZooms;
+    }
+
+    const LineGraph & sideLaneZooms() const
+    {
+        return m_sideLaneZooms;
     }
 
     std::size_t comboCount() const;

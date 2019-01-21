@@ -250,6 +250,18 @@ PlayableChart::PlayableChart(const std::string & filename, bool isEditor)
                 {
                     insertTempoChange(tempoChanges, pos, option.second);
                 }
+                else if (option.first == "zoom_top")
+                {
+                    m_topLaneZooms.insert(pos, std::stod(option.second));
+                }
+                else if (option.first == "zoom_bottom")
+                {
+                    m_bottomLaneZooms.insert(pos, std::stod(option.second));
+                }
+                else if (option.first == "zoom_side")
+                {
+                    m_sideLaneZooms.insert(pos, std::stod(option.second));
+                }
 
                 // TODO: Store other options
             }
