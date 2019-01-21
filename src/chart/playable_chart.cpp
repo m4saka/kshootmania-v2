@@ -277,7 +277,7 @@ PlayableChart::PlayableChart(const std::string & filename)
                             }
                         }
                     }
-                    else if (currentBlock == BLOCK_LASER && laneCount == 3) // Lane spin
+                    else if (currentBlock == BLOCK_LASER && laneCount == 2) // Lane spin
                     {
                         // Create a lane spin from string
                         const LaneSpin laneSpin(buf.substr(j));
