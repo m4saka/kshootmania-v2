@@ -1,3 +1,5 @@
+#pragma once
+
 #include <string>
 
 #include "../beat_map/time_signature.h"
