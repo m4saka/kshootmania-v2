@@ -1,0 +1,419 @@
+KSH Chart File Format Specification
+====================================
+
+## Encoding
+- UTF-8 with BOM is recommended.
+- Legacy charts (before v1.32) use ASCII, but wide chars are garbled depending on the OS locale.
+- Note: Although using the BOM for UTF-8 is NOT recommended in the Unicode standard, currently KSM USES IT for detecting UTF-8 charts (actually it is not a good choice). Make sure to save in UTF-8 **with BOM** when you edit KSH files with a text editor.
+
+
+## Line types
+There are five types of lines in a KSH file: the option line, the chart line, the bar line, the definition line, and the comment line. Empty lines are ignored.
+
+- Option Line
+    - Examples
+        - "`title=Colorful Sky`"
+        - "`m=colorfulsky.ogg;colorfulsky_in_f.ogg`"
+    - Format
+        - "`<param-name>=<value>`"
+        - Not ignoring white spaces around "`=`"
+        - No extra quotes are allowed
+            - These quote are also regarded as a part of `<value>`.
+            - e.g. You won't get desirable results for "`title="Colorful Sky"`" or "`"title"="Colorful Sky"`".
+        - After the first "`=`", "`=`" is regarded as a part of `<value>`.
+            - For example, "`title`" is treated as `<param-name>` and "`1+1=2`" is treated as `<value>` in "`title=1+1=2`".
+    - Parameters
+        - `<param-name>`: The parameter name
+        - `<value>`: The value
+    - Some options expect "`;`" as a separator of `<value>`
+- Chart Line
+    - Examples
+        - "`0000|00|--`" (Empty)
+        - "`0110|22|--`" (2 Chip BT note & 2 Chip FX note)
+        - "`0220|11|--`" (4 Long BT note & 2 Long FX note)
+        - "`0000|00|0o`" (2 Laser default positions)
+        - "`0000|00|::`" (2 Laser note continuation)
+        - "`0000|00|o0`" (2 Laser opposite positions)
+    - Format
+        - "`<bt-lanes x 4>|<fx-lanes x 2>|<laser-lanes x 2><lane-spin (optional)>`"
+    - Parameters
+        - `<bt-lanes x 4>`
+            - The number of character must be 4 (no separator required).
+            - Each character stands for a BT lane, and can have any value of:
+                - "`0`": Empty
+                - "`1`": Chip BT note
+                - "`2`": Long BT note
+            - If the previous character of the same lane is `2`, `2` denotes continuation of the previous note.
+        - `<fx-lanes x 2>`
+            - The number of character must be 2 (no separator required).
+            - Each character stands for a FX lane, and can have any value of:
+                - "`0`": Empty
+                - "`2`": Chip FX note
+                - "`1`" (or any other character): Long FX note
+            - If the previous character of the same lane is "`1`" (or any), "`1`" (or any) denotes continuation of the previous note.
+            - Note that "`1`" and "`2`" are the reverse of those of BT lanes.
+                - This is due to historical reasons; initial (unreleased) versions of KSM expected only chip notes for BT lanes and long notes for FX lanes. Long BT notes and chip FX notes are added just before the first release of KSM.
+            - Legacy KSH charts (before v1.60) use these characters for a long FX note:
+                - "`S`": `Retrigger;8`
+                - "`V`": `Retrigger;12`
+                - "`T`": `Retrigger;16`
+                - "`W`": `Retrigger;24`
+                - "`U`": `Retrigger;32`
+                - "`G`": `Gate;4`
+                - "`H`": `Gate;8`
+                - "`K`": `Gate;12`
+                - "`I`": `Gate;16`
+                - "`L`": `Gate;24`
+                - "`J`": `Gate;32`
+                - "`F`": `Flanger`
+                - "`P`": `PitchShift`
+                - "`B`": `BitCrusher`
+                - "`Q`": `Phaser`
+                - "`X`": `Wobble;12`
+                - "`A`": `TapeStop`
+                - "`D`": `SideChain`
+            - Current KSH charts (v1.60 or newer) use "`0`" for a long FX note.
+                - Audio effects are specified by using "`fx-l`" or "`fx-r`" options, which will be described later.
+        - `<laser-lanes x 2>`
+            - The number of character must be 2 (no separator required).
+            - The first character stands for the left (blue) laser knob, and the second stands for the right (red) laser knob.
+                - "`-`" stands for no laser.
+                - "`:`" stands for linear connection of two laser positions.
+                - A character of the laser position can be one of the following 51 steps (from left to right):  
+                Left <-  `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno`  -> Right
+        - `<lane-spin (optional)>`"
+            - Examples: `@(192`, `@<192`, `S<192`
+            - The first two characters denote the effect type
+                - `@(`: Normal spin (left, clockwise)
+                - `@)`: Normal spin (right, counterclockwise)
+                - `@<`: Half spin (left, clockwise)
+                - `@>`: Half spin (right, counterclockwise)
+                - `S<`: Swing effect (left)
+                - `S>`: Swing effect (right)
+                - Note: A long time ago, I expected `(` imitating `↻`, and `<` imitating `⇐`. It's hard to understand!
+            - The number is the length (192 per measure).
+- Bar Line
+    - Two measures are separated by one bar line.
+    - Format
+        - "`--`"
+    - There must be at least one bar line in a KSH chart file.
+    - The last bar line is required after all the chart lines.
+- Definition Line
+    - Example
+        - "`#define_fx LoFl type=Flanger;delay=80samples;depth=60samples`"
+        - "`#define_filter TSTP type=TapeStop;trigger=off>on;speed=20%`"
+    - Format
+        - "`#define_<definition-type> <name> <value>`"
+        - A series of white spaces is regarded as one separator.
+    - Definition lines should be placed at the end of KSH chart file (but possibly can be read even if placed anywhere).
+- Comment Line
+    - Comment Lines are ignored but shown in Editor as comments.
+    - Format
+        - "`//<comment>`"
+    - Note: The "`;`" comments are not officially supported although some unofficial tools use them as comments which is not shown in Editor. Actually they are fortunately ignored in MOST CASES, by not being detected as the other line types or being detected as option lines with an unknown parameter name.
+
+
+## Header
+
+The lines before the first bar line is described as the header of a KSH chart file. The header can have only option lines (or comment lines).
+
+The list of header options is as follows:
+- "`title`" (default:"")
+    - The song title (string)
+    - This option must be placed at the beginning of a KSH chart file. No comments allowed before this.
+- "`title_img`" (default:"")
+    - The image filename for the song title (string)
+- "`artist`" (default:"")
+    - The artist name (string)
+- "`artist_img`" (default:"")
+    - The image filename for the artist name (string)
+- "`effect`" (default:"")
+    - The chart author name (string)
+- "`jacket`" (default:"")
+    - The filename of the jacket image (string)
+    - This option can have a value of these preset jacket images:
+        - "`nowprinting1`"
+        - "`nowprinting2`"
+        - "`nowprinting3`"
+- "`illustrator`" (default:"")
+    - The jacket image author name (string)
+- "`difficulty`" (default:"`light`")
+    - The chart difficulty (string)
+    - This option can have one of the following:
+        - "`light`"
+        - "`challenge`"
+        - "`extended`"
+        - "`infinite`"
+    - An unknown difficulty is treated as "`infinite`"
+- "`level`" (default:"`1`")
+    - The chart level (int, 1-20)
+- "`t`" (default:"`120`")
+    - The song tempo (BPM) (float or string, 0.001-65535.0)
+        - If the chart has tempo changes,
+            - The value is set to string value representing a range of tempo changes (e.g. "`180-220`").
+            - The first tempo should be specified just after the first bar line.
+        - Otherwise,
+            - The value is set to a float (real) value.
+    - This can be placed after the first bar line for tempo changes.
+- "`to`" (default:"`0`")
+    - The standard tempo for the Hi-speed values (float, min BPM - max BPM in the chart)
+    - A value of "`0`" means the value is set automatically.
+- "`beat`" (default: "`4/4`")
+    - The time signature (int + "`/`" + int)
+    - This can be placed after the first bar line for time signature changes.
+        - In the current version of Editor, the "`beat`" option is placed after the first bar line even if it is placed in the first measure.
+- "`m`" (default:"")
+    - The song filename(s) (string)
+    - There can be multiple filenames separated by "`;`" in the charts using legacy audio effect methods.
+        - If there are 4 filenames (e.g. "`song.ogg;song_f.ogg;song_p.ogg;song_fp.ogg`"),
+            - The first is used in default.
+            - The second is used while all the long FX notes shown are activated.
+            - The third is used while all the laser notes shown are activated.
+            - The forth is used while all the long FX and laser notes are activated if they are shown at the same time.
+        - If there are 2 filenames (e.g. "`song.ogg;song_f.ogg`"),
+            - The first is used in default.
+            - The second is used while all the long FX notes shown are activated.
+            - The audio effects implemented in the software are applied for laser notes.
+        - If there is only 1 filename (e.g. "`song.ogg`"),
+            - The audio effects implemented in the software are applied for both FX notes and laser notes.
+- "`mvol`" (default:"`50`")
+    - The song volume (%) (int, 0-)
+    - The value can exceed 100.
+    - For historical reasons, the value is multiplied by 0.6 if the value of "`ver`" is not specified.
+- "`o`" (default:"`0`")
+    - The song offset in milliseconds (int)
+    - Since this value denotes the starting point of the song audio, note judgments will be later by setting a larger value.
+    - The value can be negative.
+- "`bg`" (default:"`desert`")
+    - The background image name (string)
+    - There are 13 preset images:
+        - "`desert`"
+        - "`grass`"
+        - "`night`"
+        - "`deepsea`"
+        - "`sky`"
+        - "`sunset`"
+        - "`ocean`"
+        - "`flame`"
+        - "`cyber`"
+        - "`space`"
+        - "`mars`"
+        - "`cloudy`"
+        - "`fantasy`"
+    - This option can have one or two filename(s) separated by "`;`".
+        - If there are 1 filenames (e.g. "`bg1.jpg`")
+            - The single image is always used for the background.
+        - If there are 2 filenames (e.g. "`bg1.jpg;bg2.jpg`")
+            - The first is used while the gauge percentage is under 70%.
+            - The second is used while the gauge percentage is 70% or higher.
+- "`layer`" (default:"`arrow`")
+    - The animation layer name (string)
+    - There are 7 preset images:
+        - "`arrow`"
+        - "`smoke`"
+        - "`wave`"
+        - "`techno`"
+        - "`snow`"
+        - "`sakura`"
+        - "`hidden`"
+    - This option can have a filename (e.g. "`layer.png`").
+    - The speed and the rotation behavior are changed by setting additional values separated by "`;`" (in v1.67 or later) or "`/`" (before v1.67).
+        - Example: "`layer=snow;1100;1`"
+        - The second value (int) denotes the length of time for one loop in milliseconds.
+            - Negative values can be used for playing in reverse.
+        - The third value (int, 0-3) denotes:
+            -  0: No rotation
+            - +1: the layer follows lane tilts
+            - +2: the layer follows lane spins
+- "`po`" (default:"`0`")
+    - The offset (in milliseconds) of samples previewed in the song selection (int, 0-).
+- "`plength`" (default:"`0`")
+    - The length (in milliseconds) of samples previewed in the song selection (int, 0-).
+- "`total`" (default:"`0`")
+    - The total ascension of gauge percentage in the entire chart (int, 100-).
+    - A value of "`0`" means the value is set automatically.
+    - This value is only used for the normal and easy gauge. When playing with the hard gauge, this value is ignored.
+    - For easy gauge, the value is multiplied by 1.1.
+- "`chokkakuvol`" (default:"`50`")
+    - The volume (%) of laser slams (int, 0-100)
+    - This can be also placed after the first bar line.
+    - Note: "chokkaku" is a Japanese word for "right angle". Bad naming for a parameter.
+- "`chokkakuautovol`" (default:"`1`")
+    - Whether to change the volume of laser slams depending on the width of the laser (int, 0 or 1)
+- "`filtertype`" (default:"`peak`")
+    - The type of audio effects for laser notes (string)
+        - "`peak`": Peaking filter
+        - "`hpf1`": Hi-pass filter
+        - "`lpf1`": Low-pass filter
+        - "`bitc`": Bitcrusher
+        - "`fx`" or "`fx;bitc`": Playing the second audio file specified in the "`m`" option.
+        - User-defined name: Can be defined by writing "`#define_filter`" lines in the footer
+    - This can be also placed after the first bar line.
+    - Note: In spite of the value names, there are no values like "`hpf2`" or "`lpf2`".
+- "`pfiltergain`" (default:"`50`")
+    - The gain of the peaking filter for laser audio effects (int, 0-100)
+    - This can be also placed after the first bar line.
+    - This value is also used for "`hpf1`" and "`lpf1`" to adjust the resonance of these.
+        - Note: The current KSM uses an additional peaking filter to the HPF and LPF to sharpen the sound around the cutoff frequency, so the gain value is also applied for these filters. But the shape of the frequency responce by HPF and LPF can (should) be adjusted by the Q factor, and essentially the additional peaking filter is not required. This is a bad design and can be fixed in future version for implementing the user-defined peaking/hi-pass/low-pass filters.
+- "`pfilterdelay`" (default:"`50`")
+    - The timing delay (in milliseconds) of the peaking filter for laser audio effects (int, 0-160)
+    - This value is ignored if the legacy laser audio effects (audio file) is used.
+    - This value is not applied to HPF and LPF and BITC.
+- "`v`" (default:"")
+    - The video filename (string)
+- "`vo`" (default:"0")
+    - The video offset (int)
+    - The value can be negative.
+- "`ver`" (default:"")
+    - The version of the KSH file format (string)
+    - Since this value is the version of the format, the value is not always the same as the version of Editor.
+    - History and implementation guides:
+        - ""
+            - The value of "`mvol`" is multiplied by 0.6.
+            - The separator of "`layer`" is "`/`".
+            - The "`t`" value can be set higher than 65535.0
+            - The relaxation time of lane tilts is 2/3 times as large as that of the current version.
+            - If the lane is tilted to the opposite side, the tilt is updated even when the lane tilt type is "keep".
+        - "`120`"
+            - The value of "`mvol`" is the same as that of the current version.
+        - "`120b`"
+            - Even if the lane is tilted to the opposite side, the tilt is not updated when the lane tilt type is "keep".
+        - "`121`"
+            - The relaxation time of lane tilts is the same as that of the current version.
+        - "`130`"
+            - The "`t`" value can not be set higher than 65535.0
+        - "`166`"
+            - The separator of "`layer`" is changed to "`;`".
+                - "`/`" is no longer treated as a separator.
+                - This change enables to use a relative path for "`layer`".
+        - "`167`"
+            - The top lane zoom behavior is updated (from simple move to 3D rotation).
+            - The lane zoom values are not restricted between -300 and 300.
+
+
+## Chart Body
+
+The lines after the first bar line is described as the body of a KSH chart file. The body can have option lines, chart lines, bar lines, or comment lines.
+
+A bar line must be placed after the last chart line.
+
+The list of body options is as follows:
+
+- "`t`"
+    - A tempo (BPM) change (float, 0.001-65535.0)
+- "`beat`"
+    - A time signature change (int + "`/`" + int)
+    - This option should be placed just after the bar line, but if not, the time signature change is applied for the next measure.
+- "`chokkakuvol`"
+    - A volume (%) change of laser slams (int, 0-100)
+- "`chokkakuse`"
+    - A laser slam sound setting (string)
+    - Should be placed just before the target laser slam.
+    - The value is chosen from these preset sounds:
+        - "`up`"
+        - "`down`"
+        - "`swing`"
+        - "`mute`"
+    - Audio filenames cannot be used.
+- "`pfiltergain`" (default:"`50`")
+    - The gain of the peaking filter for laser audio effects (int, 0-100)
+- "`stop`"
+    - A pause (int)
+    - The value is the length of the pause (192 per measure).
+- "`tilt`"
+    - A type change of lane tilts (string or float)
+        - "`normal`": The default tilt
+        - "`bigger`": The bigger tilt
+        - "`biggest`": The biggest tilt
+        - "`keep_normal`": Keeping the default tilt
+        - "`keep_bigger`": Keeping the bigger tilt
+        - "`keep_biggest`": Keeping the biggest tilt
+        - "`zero`": No tilt
+        - (DEPRECATED) "`big`": The bigger tilt
+        - (DEPRECATED) "`keep`": Keeping the bigger tilt
+        - Float value: Setting the tilt amount manually (supported in v1.67)
+            - Behave as a linear graph (the same as lane zooms)
+                - An immediate change can be created by successive two lines of the "`tilt`" option.
+                - Note: No "`;`" separator allowed in KSH files although an immediate change is set by using "`;`".
+- "`zoom_top`", "`zoom_bottom`", "`zoom_side`"
+    - A value change of camera controls (int)
+    - The values behave as a linear graph (the same as manual tilts)
+        - An immediate change can be created by successive two lines of the same options.
+    - If "`ver`" is earlier than "`167`", the value is restricted between -300 and 300.
+    - Camera behaviors:
+        - "`zoom_top`"
+            - If "`ver`" is earlier than "`167`", the "zoom_top" simply moves the upper side of the lane upward; otherwise, "zoom_top" rotates the upper side of the lane with the judgment line as an axis.
+            - 2400 per 360 [deg] rotation
+        - "`zoom_bottom`"
+            - The lower side of the lane gets closer with a larger value.
+        - "`zoom_side`"
+            - The holizontal position of the lane is shifted in the left (-) or right (+) direction.
+- "`laserrange_l`", "`laserrange_r`"
+    - A wide-range laser setting (string)
+    - Should be placed just before the beginning of the series of laser objects.
+        - Cannot make a normal laser a wide-range one midway through the note.
+    - The value must be "`2x`".
+        - "`1x`" is allowed but it is meaningless.
+- "`fx-l`", "`fx-r`"
+    - The type of audio effects for a long FX note (string)
+        - "`Retrigger;<n>`": Retrigger with a `n`-th length of the wave
+            - `<n>`: int, 1- (default:"`8`")
+        - "`Gate;<n>`": Trance gate with a `n`-th length of the wave
+            - `<n>`: int, 1- (default:"`4`")
+        - "`Flanger`": Flanger effects
+        - "`PitchShift;<pitch>`": Phaser effects
+            - `<pitch>`: int, -48 - 48 (12 per 1 [oct]) (default:"`12`")
+        - "`BitCrusher;<reduction>`": Bitcrusher effects (default:"`5`")
+            - `<reduction>`: int, 0-64
+        - "`Phaser`": Phaser effects
+        - "`Wobble;<n>`": Sweeping low-pass filter with a `n`-th length of the wave
+            - `<n>`: int, 1- (default:"`12`")
+        - "`TapeStop;<speed>`": Tape stop effects
+            - `<speed>`: int, 0-100 (default:"`50`")
+        - "`Echo;<n>;<feedback>`": Fade-out retrigger with a `n`-th length of the wave
+            - `<n>`: int, 1- (default:"`4`")
+            - `<feedback>`: int, 0-100 (default:"`60`")
+        - "`SideChain`": Ducking (like sidechain compression)
+        - User-defined name: Can be defined by writing "`#define_fx`" lines in the footer
+    - The second or third parameter is optional and set to the default if not specified.
+    - The value is ignored if the long FX note is created using legacy audio effect specification (with a character other than "`1`").
+- (Legacy) "`fx-l_param1`", "`fx-r_param1`"
+    - The parameter for a long FX note with legacy audio effect specification (with a character other than "`1`") (int)
+    - This is the same parameter as the second value of "`fx-l`" and "`fx-r`".
+- "`fx-l_se`", "`fx-r_se`"
+    - The key sound setting for a chip FX note (string)
+    - Should be set to a filename or one of these preset sounds:
+        - "`clap`"
+        - "`clap_punchy`"
+        - "`clap_impact`"
+        - "`snare`"
+        - "`snare_lo`"
+    - `.wav` is recommended for audio file types.
+- "`filtertype`" (default:"`peak`")
+    - The type of audio effects for laser notes (string)
+    - See "`filtertype`" in the header for more information.
+- (DEPRECATED) "`chiprate`", "`longrate`", "`laserrate`" (default:"`1x`")
+    - Change the gauge weight of the notes
+        - "`1x`": The default
+        - "`2x`": The weight is multiplied by 2 for gauge ascension, and 1.5 for descension
+        - "`3x`": The weight is multiplied by 3 for gauge ascension, and 2 for descension
+    - There's a bug even in the latest version: 
+    - Considering the internet ranking plans and complication of the specification, these options will be deleted at least in KSM V2.
+
+
+## Footer
+
+The lines after the first bar line is described as the footer of a KSH chart file. The footer can only have definition lines (or comment lines).
+
+The list of definition types is as follows:
+
+- "`#define_fx`"
+    - User-defined audio effects for long FX notes
+- "`#define_filter`"
+    - User-defined audio effects for laser notes
+
+Note that the name of a user-defined audio effect can be duplicated with the preset effects (e.g. "`Flanger`").
+
+For more information about user-defined audio effects, please check out the following blog post.
+- [K-Shoot MANIA v1.60] Tutorial on creating user-defined effects
+    - http://mtstdy.blog.fc2.com/blog-entry-27.html (only available in Japanese)
