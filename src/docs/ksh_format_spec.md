@@ -46,7 +46,7 @@ There are five types of lines in a KSH file: the option line, the chart line, th
             - If the previous character of the same lane is `2`, `2` denotes continuation of the previous note.
         - `<fx-lanes x 2>`
             - The number of character must be 2 (no separator required).
-            - Each character stands for a FX lane, and can have any value of:
+            - Each character stands for an FX lane, and can have any value of:
                 - "`0`": Empty
                 - "`2`": Chip FX note
                 - "`1`" (or any other character): Long FX note
@@ -110,12 +110,12 @@ There are five types of lines in a KSH file: the option line, the chart line, th
     - Comment Lines are ignored but shown in Editor as comments.
     - Format
         - "`//<comment>`"
-    - Note: The "`;`" comments are not officially supported although some unofficial tools use them as comments which is not shown in Editor. Actually they are fortunately ignored in MOST CASES, by not being detected as the other line types or being detected as option lines with an unknown parameter name.
+    - Note: The "`;`" comments are not officially supported although some unofficial tools use them as comments which are not shown in Editor. Actually, they are fortunately ignored in MOST CASES, by not being detected as the other line types or being detected as option lines with an unknown parameter name.
 
 
 ## Header
 
-The lines before the first bar line is described as the header of a KSH chart file. The header can have only option lines (or comment lines).
+The lines before the first bar line are described as the header of a KSH chart file. The header can have only option lines (or comment lines).
 
 The list of header options is as follows:
 - "`title`" (default:"")
@@ -169,13 +169,13 @@ The list of header options is as follows:
             - The first is used in default.
             - The second is used while all the long FX notes shown are activated.
             - The third is used while all the laser notes shown are activated.
-            - The forth is used while all the long FX and laser notes are activated if they are shown at the same time.
+            - The fourth is used while all the long FX and laser notes are activated if they are shown at the same time.
         - If there are 2 filenames (e.g. "`song.ogg;song_f.ogg`"),
             - The first is used in default.
             - The second is used while all the long FX notes shown are activated.
-            - The audio effects implemented in the software are applied for laser notes.
+            - The audio effects implemented in the software are applied to laser notes.
         - If there is only 1 filename (e.g. "`song.ogg`"),
-            - The audio effects implemented in the software are applied for both FX notes and laser notes.
+            - The audio effects implemented in the software are applied to both FX notes and laser notes.
 - "`mvol`" (default:"`50`")
     - The song volume (%) (int, 0-)
     - The value can exceed 100.
@@ -201,7 +201,7 @@ The list of header options is as follows:
         - "`cloudy`"
         - "`fantasy`"
     - This option can have one or two filename(s) separated by "`;`".
-        - If there are 1 filenames (e.g. "`bg1.jpg`")
+        - If there are 1 filename (e.g. "`bg1.jpg`")
             - The single image is always used for the background.
         - If there are 2 filenames (e.g. "`bg1.jpg;bg2.jpg`")
             - The first is used while the gauge percentage is under 70%.
@@ -233,7 +233,7 @@ The list of header options is as follows:
     - The total ascension of gauge percentage in the entire chart (int, 100-).
     - A value of "`0`" means the value is set automatically.
     - This value is only used for the normal and easy gauge. When playing with the hard gauge, this value is ignored.
-    - For easy gauge, the value is multiplied by 1.1.
+    - For the easy gauge, the value is multiplied by 1.1.
 - "`chokkakuvol`" (default:"`50`")
     - The volume (%) of laser slams (int, 0-100)
     - This can be also placed after the first bar line.
@@ -254,7 +254,7 @@ The list of header options is as follows:
     - The gain of the peaking filter for laser audio effects (int, 0-100)
     - This can be also placed after the first bar line.
     - This value is also used for "`hpf1`" and "`lpf1`" to adjust the resonance of these.
-        - Note: The current KSM uses an additional peaking filter to the HPF and LPF to sharpen the sound around the cutoff frequency, so the gain value is also applied for these filters. But the shape of the frequency responce by HPF and LPF can (should) be adjusted by the Q factor, and essentially the additional peaking filter is not required. This is a bad design and can be fixed in future version for implementing the user-defined peaking/hi-pass/low-pass filters.
+        - Note: The current KSM uses an additional peaking filter to the HPF and LPF to sharpen the sound around the cutoff frequency, so the gain value is also applied for these filters. But the shape of the frequency response by HPF and LPF can (should) be adjusted by the Q factor, and essentially the additional peaking filter is not required. This is a bad design and can be fixed in a future version for implementing the user-defined peaking/hi-pass/low-pass filters.
 - "`pfilterdelay`" (default:"`50`")
     - The timing delay (in milliseconds) of the peaking filter for laser audio effects (int, 0-160)
     - This value is ignored if the legacy laser audio effects (audio file) is used.
@@ -281,19 +281,19 @@ The list of header options is as follows:
         - "`121`"
             - The relaxation time of lane tilts is the same as that of the current version.
         - "`130`"
-            - The "`t`" value can not be set higher than 65535.0
+            - The "`t`" value cannot be set higher than 65535.0
         - "`166`"
             - The separator of "`layer`" is changed to "`;`".
                 - "`/`" is no longer treated as a separator.
                 - This change enables to use a relative path for "`layer`".
         - "`167`"
-            - The top lane zoom behavior is updated (from simple move to 3D rotation).
+            - The top lane zoom behavior is updated (from a simple move to a 3D rotation).
             - The lane zoom values are not restricted between -300 and 300.
 
 
 ## Chart Body
 
-The lines after the first bar line is described as the body of a KSH chart file. The body can have option lines, chart lines, bar lines, or comment lines.
+The lines after the first bar line are described as the body of a KSH chart file. The body can have option lines, chart lines, bar lines, or comment lines.
 
 A bar line must be placed after the last chart line.
 
@@ -403,7 +403,7 @@ The list of body options is as follows:
 
 ## Footer
 
-The lines after the first bar line is described as the footer of a KSH chart file. The footer can only have definition lines (or comment lines).
+The lines after the first bar line are described as the footer of a KSH chart file. The footer can only have definition lines (or comment lines).
 
 The list of definition types is as follows:
 
