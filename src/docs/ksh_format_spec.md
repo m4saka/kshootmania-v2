@@ -397,7 +397,7 @@ The list of body options is as follows:
         - "`1x`": The default
         - "`2x`": The weight is multiplied by 2 for gauge ascension, and 1.5 for descension
         - "`3x`": The weight is multiplied by 3 for gauge ascension, and 2 for descension
-    - There's a bug even in the latest version: 
+    - There's a bug even in the latest version: the "`3x`" option is not enabled only for "`laserrate`".
     - Considering the internet ranking plans and complication of the specification, these options will be deleted at least in KSM V2.
 
 
