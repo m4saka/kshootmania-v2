@@ -30,7 +30,7 @@ There are five types of lines in a KSH file: the option line, the chart line, th
     - Examples
         - "`0000|00|--`" (Empty)
         - "`0110|22|--`" (2 Chip BT note & 2 Chip FX note)
-        - "`0220|11|--`" (4 Long BT note & 2 Long FX note)
+        - "`0220|11|--`" (2 Long BT note & 2 Long FX note)
         - "`0000|00|0o`" (2 Laser default positions)
         - "`0000|00|::`" (2 Laser note continuation)
         - "`0000|00|o0`" (2 Laser opposite positions)
