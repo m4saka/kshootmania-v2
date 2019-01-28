@@ -72,7 +72,7 @@ There are five types of lines in a KSH file: the option line, the chart line, th
                 - "`X`": `Wobble;12`
                 - "`A`": `TapeStop`
                 - "`D`": `SideChain`
-            - Current KSH charts (v1.60 or newer) use "`0`" for a long FX note.
+            - Current KSH charts (v1.60 or newer) use "`1`" for a long FX note.
                 - Audio effects are specified by using "`fx-l`" or "`fx-r`" options, which will be described later.
         - `<laser-lanes x 2>`
             - The number of character must be 2 (no separator required).
@@ -81,7 +81,8 @@ There are five types of lines in a KSH file: the option line, the chart line, th
                 - "`:`" stands for linear connection of two laser positions.
                 - A character of the laser position can be one of the following 51 steps (from left to right):  
                 Left <-  `0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmno`  -> Right
-        - `<lane-spin (optional)>`"
+            - 1/32th or shorter laser notes are recognized as laser slams. (There's no way to create 1/32th ordinary laser notes in the current specification.)
+        - `<lane-spin (optional)>`
             - Examples: `@(192`, `@<192`, `S<192`
             - The first two characters denote the effect type
                 - `@(`: Normal spin (left, clockwise)
@@ -90,7 +91,6 @@ There are five types of lines in a KSH file: the option line, the chart line, th
                 - `@>`: Half spin (right, counterclockwise)
                 - `S<`: Swing effect (left)
                 - `S>`: Swing effect (right)
-                - Note: A long time ago, I expected `(` imitating `↻`, and `<` imitating `⇐`. It's hard to understand!
             - The number is the length (192 per measure).
 - Bar Line
     - Two measures are separated by one bar line.
@@ -105,7 +105,7 @@ There are five types of lines in a KSH file: the option line, the chart line, th
     - Format
         - "`#define_<definition-type> <name> <value>`"
         - A series of white spaces is regarded as one separator.
-    - Definition lines should be placed at the end of KSH chart file (but possibly can be read even if placed anywhere).
+    - Definition lines should be placed at the end of KSH chart file (possibly can be read even if placed anywhere, but DON'T DO THAT).
 - Comment Line
     - Comment Lines are ignored but shown in Editor as comments.
     - Format
@@ -114,13 +114,13 @@ There are five types of lines in a KSH file: the option line, the chart line, th
 
 
 ## Header
-
 The lines before the first bar line are described as the header of a KSH chart file. The header can have only option lines (or comment lines).
 
 The list of header options is as follows:
 - "`title`" (default:"")
     - The song title (string)
     - This option must be placed at the beginning of a KSH chart file. No comments allowed before this.
+        - Actually it works currently, but DON'T DO THAT. This restriction may improve the performance for searching charts (but this is not necessarily needed if a chart database is created in the initial loading).
 - "`title_img`" (default:"")
     - The image filename for the song title (string)
 - "`artist`" (default:"")
@@ -261,7 +261,7 @@ The list of header options is as follows:
     - This value is not applied to HPF and LPF and BITC.
 - "`v`" (default:"")
     - The video filename (string)
-- "`vo`" (default:"0")
+- "`vo`" (default:"`0`")
     - The video offset (int)
     - The value can be negative.
 - "`ver`" (default:"")
