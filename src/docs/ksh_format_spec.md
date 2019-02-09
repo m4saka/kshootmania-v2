@@ -289,6 +289,9 @@ The list of header options is as follows:
         - "`167`"
             - The top lane zoom behavior is updated (from a simple move to a 3D rotation).
             - The lane zoom values are not restricted between -300 and 300.
+- "`information`" (default:"")
+    - The optional information shown in song selection
+    - Line break is not supported
 
 
 ## Chart Body
