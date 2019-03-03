@@ -8,72 +8,77 @@
 #include "chart_object/fx_note.hpp"
 #include "chart_object/laser_note.hpp"
 
-// Temporary class for inserting notes to the lane
-class AbstractNoteBuilder
+namespace ksh
 {
-protected:
-    Measure m_preparedNotePos;
-    Measure m_preparedNoteLength;
-    bool m_preparedNoteHalvesCombo;
-    bool m_notePrepared;
 
-public:
-    explicit AbstractNoteBuilder();
+    // Temporary class for inserting notes to the lane
+    class AbstractNoteBuilder
+    {
+    protected:
+        Measure m_preparedNotePos;
+        Measure m_preparedNoteLength;
+        bool m_preparedNoteHalvesCombo;
+        bool m_notePrepared;
 
-    void resetPreparedNote();
+    public:
+        explicit AbstractNoteBuilder();
 
-    void extendPreparedNoteLength(Measure diff);
+        void resetPreparedNote();
 
-    virtual ~AbstractNoteBuilder() = 0;
-};
+        void extendPreparedNoteLength(Measure diff);
 
-class BTNoteBuilder : public AbstractNoteBuilder
-{
-private:
-    Lane<BTNote> & m_lane;
+        virtual ~AbstractNoteBuilder() = 0;
+    };
 
-public:
-    explicit BTNoteBuilder(Lane<BTNote> & lane);
+    class BTNoteBuilder : public AbstractNoteBuilder
+    {
+    private:
+        Lane<BTNote> & m_lane;
 
-    void addPreparedNote();
+    public:
+        explicit BTNoteBuilder(Lane<BTNote> & lane);
 
-    // Prepare a long BT note
-    void prepareNote(Measure pos, bool halvesCombo);
-};
+        void addPreparedNote();
 
-class FXNoteBuilder : public AbstractNoteBuilder
-{
-private:
-    Lane<FXNote> & m_lane;
+        // Prepare a long BT note
+        void prepareNote(Measure pos, bool halvesCombo);
+    };
 
-    // Only used in editor
-    std::string m_preparedNoteAudioEffectStr;
-    std::string m_preparedNoteAudioEffectParamStr;
+    class FXNoteBuilder : public AbstractNoteBuilder
+    {
+    private:
+        Lane<FXNote> & m_lane;
 
-public:
-    explicit FXNoteBuilder(Lane<FXNote> & lane);
+        // Only used in editor
+        std::string m_preparedNoteAudioEffectStr;
+        std::string m_preparedNoteAudioEffectParamStr;
 
-    void addPreparedNote();
+    public:
+        explicit FXNoteBuilder(Lane<FXNote> & lane);
 
-    // Prepare a long FX note (in editor, notes are split if audio effects are different)
-    void prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffectStr = "", const std::string & audioEffectParamStr = "", bool isEditor = false);
-};
+        void addPreparedNote();
 
-class LaserNoteBuilder : public AbstractNoteBuilder
-{
-private:
-    Lane<LaserNote> & m_lane;
-    int m_preparedNoteLaserStartX;
-    LaneSpin m_preparedLaneSpin;
+        // Prepare a long FX note (in editor, notes are split if audio effects are different)
+        void prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffectStr = "", const std::string & audioEffectParamStr = "", bool isEditor = false);
+    };
 
-public:
-    explicit LaserNoteBuilder(Lane<LaserNote> & lane);
+    class LaserNoteBuilder : public AbstractNoteBuilder
+    {
+    private:
+        Lane<LaserNote> & m_lane;
+        int m_preparedNoteLaserStartX;
+        LaneSpin m_preparedLaneSpin;
 
-    void addPreparedNote(int preparedNoteLaserEndX);
+    public:
+        explicit LaserNoteBuilder(Lane<LaserNote> & lane);
 
-    // Prepare a laser note
-    void prepareNote(Measure pos, bool halvesCombo, int laserStartX);
+        void addPreparedNote(int preparedNoteLaserEndX);
 
-    // Prepare a lane spin
-    void prepareLaneSpin(const LaneSpin & laneSpin);
-};
+        // Prepare a laser note
+        void prepareNote(Measure pos, bool halvesCombo, int laserStartX);
+
+        // Prepare a lane spin
+        void prepareLaneSpin(const LaneSpin & laneSpin);
+    };
+
+}

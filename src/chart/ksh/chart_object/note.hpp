@@ -7,31 +7,36 @@
 #include "musical_segment.hpp"
 #include "note_judgment.hpp"
 
-struct AbstractNote : public AbstractMusicalSegment
+namespace ksh
 {
-protected:
-    std::map<Measure, NoteJudgment> m_judgments;
 
-public:
-    explicit AbstractNote(Measure length = 0)
-        : AbstractMusicalSegment(length)
+    struct AbstractNote : public AbstractMusicalSegment
     {
-    }
+    protected:
+        std::map<Measure, NoteJudgment> m_judgments;
 
-    virtual ~AbstractNote() = default;
+    public:
+        explicit AbstractNote(Measure length = 0)
+            : AbstractMusicalSegment(length)
+        {
+        }
 
-    std::size_t comboCount() const
-    {
-        return m_judgments.size();
-    }
+        virtual ~AbstractNote() = default;
 
-    static constexpr Measure judgmentInterval(bool halvesCombo)
-    {
-        return UNIT_MEASURE / (halvesCombo ? 8 : 16);
-    }
+        std::size_t comboCount() const
+        {
+            return m_judgments.size();
+        }
 
-    static constexpr Measure oneJudgmentThreshold(bool halvesCombo)
-    {
-        return UNIT_MEASURE * 3 / (halvesCombo ? 8 : 16);
-    }
-};
+        static constexpr Measure judgmentInterval(bool halvesCombo)
+        {
+            return UNIT_MEASURE / (halvesCombo ? 8 : 16);
+        }
+
+        static constexpr Measure oneJudgmentThreshold(bool halvesCombo)
+        {
+            return UNIT_MEASURE * 3 / (halvesCombo ? 8 : 16);
+        }
+    };
+
+}

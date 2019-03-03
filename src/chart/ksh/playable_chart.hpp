@@ -13,74 +13,79 @@
 #include "chart_object/laser_note.hpp"
 #include "chart_object/line_graph.hpp"
 
-template <class Note>
-using Lane = std::multimap<Measure, Note>;
-
-// Chart (header & body)
-class PlayableChart : public Chart
+namespace ksh
 {
-private:
-    bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, const std::string & value);
 
-protected:
-    std::unique_ptr<BeatMap> m_beatMap;
-    std::vector<Lane<BTNote>> m_btLanes;
-    std::vector<Lane<FXNote>> m_fxLanes;
-    std::vector<Lane<LaserNote>> m_laserLanes;
-    LineGraph m_topLaneZooms;
-    LineGraph m_bottomLaneZooms;
-    LineGraph m_sideLaneZooms;
-    PlayableChart(const std::string & filename, bool isEditor);
+    template <class Note>
+    using Lane = std::multimap<Measure, Note>;
 
-public:
-    PlayableChart(const std::string & filename) : PlayableChart(filename, false) {}
-
-    virtual ~PlayableChart() = default;
-
-    const Lane<BTNote> & btLane(std::size_t idx) const
+    // Chart (header & body)
+    class PlayableChart : public Chart
     {
-        return m_btLanes.at(idx);
-    }
+    private:
+        bool insertTempoChange(std::map<Measure, double> & tempoChanges, Measure pos, const std::string & value);
 
-    const Lane<FXNote> & fxLane(std::size_t idx) const
-    {
-        return m_fxLanes.at(idx);
-    }
+    protected:
+        std::unique_ptr<BeatMap> m_beatMap;
+        std::vector<Lane<BTNote>> m_btLanes;
+        std::vector<Lane<FXNote>> m_fxLanes;
+        std::vector<Lane<LaserNote>> m_laserLanes;
+        LineGraph m_topLaneZooms;
+        LineGraph m_bottomLaneZooms;
+        LineGraph m_sideLaneZooms;
+        PlayableChart(const std::string & filename, bool isEditor);
 
-    const Lane<LaserNote> & laserLane(std::size_t idx) const
-    {
-        return m_laserLanes.at(idx);
-    }
+    public:
+        PlayableChart(const std::string & filename) : PlayableChart(filename, false) {}
 
-    const std::vector<Lane<BTNote>> & btLanes() const
-    {
-        return m_btLanes;
-    }
+        virtual ~PlayableChart() = default;
 
-    const std::vector<Lane<FXNote>> & fxLanes() const
-    {
-        return m_fxLanes;
-    }
+        const Lane<BTNote> & btLane(std::size_t idx) const
+        {
+            return m_btLanes.at(idx);
+        }
 
-    const std::vector<Lane<LaserNote>> & laserLanes() const
-    {
-        return m_laserLanes;
-    }
+        const Lane<FXNote> & fxLane(std::size_t idx) const
+        {
+            return m_fxLanes.at(idx);
+        }
 
-    const LineGraph & topLaneZooms() const
-    {
-        return m_topLaneZooms;
-    }
+        const Lane<LaserNote> & laserLane(std::size_t idx) const
+        {
+            return m_laserLanes.at(idx);
+        }
 
-    const LineGraph & bottomLaneZooms() const
-    {
-        return m_bottomLaneZooms;
-    }
+        const std::vector<Lane<BTNote>> & btLanes() const
+        {
+            return m_btLanes;
+        }
 
-    const LineGraph & sideLaneZooms() const
-    {
-        return m_sideLaneZooms;
-    }
+        const std::vector<Lane<FXNote>> & fxLanes() const
+        {
+            return m_fxLanes;
+        }
 
-    std::size_t comboCount() const;
-};
+        const std::vector<Lane<LaserNote>> & laserLanes() const
+        {
+            return m_laserLanes;
+        }
+
+        const LineGraph & topLaneZooms() const
+        {
+            return m_topLaneZooms;
+        }
+
+        const LineGraph & bottomLaneZooms() const
+        {
+            return m_bottomLaneZooms;
+        }
+
+        const LineGraph & sideLaneZooms() const
+        {
+            return m_sideLaneZooms;
+        }
+
+        std::size_t comboCount() const;
+    };
+
+}

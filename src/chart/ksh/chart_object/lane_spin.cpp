@@ -2,118 +2,123 @@
 
 #include "../beat_map/time_signature.hpp"
 
-Measure kshLengthToMeasure(const std::string & str)
+namespace ksh
 {
-    // TODO: catch the exception from stoi
-    return std::stoll(str) * UNIT_MEASURE / 192;
-}
 
-std::string measureToKshLength(Measure measure)
-{
-    return std::to_string(measure * 192 / UNIT_MEASURE);
-}
-
-LaneSpin::LaneSpin(std::string strFromKsh)
-{
-    // A .ksh spin string should have at least 3 chars
-    if (strFromKsh.length() < 3)
+    Measure kshLengthToMeasure(const std::string & str)
     {
-        type = Type::NoSpin;
-        direction = Direction::Unspecified;
-        length = 0;
-        return;
+        // TODO: catch the exception from stoi
+        return std::stoll(str) * UNIT_MEASURE / 192;
     }
 
-    // Specify the spin type
-    if (strFromKsh[0] == '@')
+    std::string measureToKshLength(Measure measure)
     {
-        switch (strFromKsh[1])
+        return std::to_string(measure * 192 / UNIT_MEASURE);
+    }
+
+    LaneSpin::LaneSpin(std::string strFromKsh)
+    {
+        // A .ksh spin string should have at least 3 chars
+        if (strFromKsh.length() < 3)
         {
-        case '(':
-            type = Type::Normal;
-            direction = Direction::Left;
-            break;
-
-        case ')':
-            type = Type::Normal;
-            direction = Direction::Right;
-            break;
-
-        case '<':
-            type = Type::Half;
-            direction = Direction::Left;
-            break;
-
-        case '>':
-            type = Type::Half;
-            direction = Direction::Right;
-            break;
-
-        default:
             type = Type::NoSpin;
             direction = Direction::Unspecified;
-            break;
+            length = 0;
+            return;
         }
-    }
-    else if (strFromKsh[0] == 'S')
-    {
-        switch (strFromKsh[1])
+
+        // Specify the spin type
+        if (strFromKsh[0] == '@')
         {
-        case '<':
-            type = Type::Swing;
-            direction = Direction::Left;
-            break;
+            switch (strFromKsh[1])
+            {
+            case '(':
+                type = Type::Normal;
+                direction = Direction::Left;
+                break;
 
-        case '>':
-            type = Type::Swing;
-            direction = Direction::Right;
-            break;
+            case ')':
+                type = Type::Normal;
+                direction = Direction::Right;
+                break;
 
-        default:
+            case '<':
+                type = Type::Half;
+                direction = Direction::Left;
+                break;
+
+            case '>':
+                type = Type::Half;
+                direction = Direction::Right;
+                break;
+
+            default:
+                type = Type::NoSpin;
+                direction = Direction::Unspecified;
+                break;
+            }
+        }
+        else if (strFromKsh[0] == 'S')
+        {
+            switch (strFromKsh[1])
+            {
+            case '<':
+                type = Type::Swing;
+                direction = Direction::Left;
+                break;
+
+            case '>':
+                type = Type::Swing;
+                direction = Direction::Right;
+                break;
+
+            default:
+                type = Type::NoSpin;
+                direction = Direction::Unspecified;
+                break;
+            }
+        }
+        else
+        {
             type = Type::NoSpin;
             direction = Direction::Unspecified;
-            break;
+        }
+
+        // Specify the spin length
+        if (type == Type::NoSpin || direction == Direction::Unspecified)
+        {
+            length = 0;
+        }
+        else
+        {
+            length = kshLengthToMeasure(strFromKsh.substr(2));
         }
     }
-    else
-    {
-        type = Type::NoSpin;
-        direction = Direction::Unspecified;
-    }
 
-    // Specify the spin length
-    if (type == Type::NoSpin || direction == Direction::Unspecified)
+    // TODO: Separate these ksh-specific methods
+    std::string LaneSpin::toString() const
     {
-        length = 0;
-    }
-    else
-    {
-        length = kshLengthToMeasure(strFromKsh.substr(2));
-    }
-}
-
-// TODO: Separate these ksh-specific methods
-std::string LaneSpin::toString() const
-{
-    if (direction == Direction::Unspecified)
-    {
-        return "";
-    }
-    else
-    {
-        switch (type)
+        if (direction == Direction::Unspecified)
         {
-        case Type::Normal:
-            return std::string("@") + ((direction == Direction::Left) ? "(" : ")") + measureToKshLength(length);
-
-        case Type::Half:
-            return std::string("@") + ((direction == Direction::Left) ? "<" : ">") + measureToKshLength(length);
-
-        case Type::Swing:
-            return std::string("S") + ((direction == Direction::Left) ? "<" : ">") + measureToKshLength(length);
-
-        default:
             return "";
         }
+        else
+        {
+            switch (type)
+            {
+            case Type::Normal:
+                return std::string("@") + ((direction == Direction::Left) ? "(" : ")") + measureToKshLength(length);
+
+            case Type::Half:
+                return std::string("@") + ((direction == Direction::Left) ? "<" : ">") + measureToKshLength(length);
+
+            case Type::Swing:
+                return std::string("S") + ((direction == Direction::Left) ? "<" : ">") + measureToKshLength(length);
+
+            default:
+                return "";
+            }
+        }
     }
+
 }

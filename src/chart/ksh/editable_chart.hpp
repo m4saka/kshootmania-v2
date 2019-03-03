@@ -2,39 +2,44 @@
 
 #include "playable_chart.hpp"
 
-// Chart (header & body)
-class EditableChart : public PlayableChart
+namespace ksh
 {
-public:
-    EditableChart(const std::string & filename) : PlayableChart(filename, true) {}
 
-    Lane<BTNote> & btLane(std::size_t idx)
+    // Chart (header & body)
+    class EditableChart : public PlayableChart
     {
-        return m_btLanes.at(idx);
-    }
+    public:
+        EditableChart(const std::string & filename) : PlayableChart(filename, true) {}
 
-    Lane<FXNote> & fxLane(std::size_t idx)
-    {
-        return m_fxLanes.at(idx);
-    }
+        Lane<BTNote> & btLane(std::size_t idx)
+        {
+            return m_btLanes.at(idx);
+        }
 
-    Lane<LaserNote> & laserLane(std::size_t idx)
-    {
-        return m_laserLanes.at(idx);
-    }
+        Lane<FXNote> & fxLane(std::size_t idx)
+        {
+            return m_fxLanes.at(idx);
+        }
 
-    std::vector<Lane<BTNote>> & btLanes()
-    {
-        return m_btLanes;
-    }
+        Lane<LaserNote> & laserLane(std::size_t idx)
+        {
+            return m_laserLanes.at(idx);
+        }
 
-    std::vector<Lane<FXNote>> & fxLanes()
-    {
-        return m_fxLanes;
-    }
+        std::vector<Lane<BTNote>> & btLanes()
+        {
+            return m_btLanes;
+        }
 
-    std::vector<Lane<LaserNote>> & laserLanes()
-    {
-        return m_laserLanes;
-    }
-};
+        std::vector<Lane<FXNote>> & fxLanes()
+        {
+            return m_fxLanes;
+        }
+
+        std::vector<Lane<LaserNote>> & laserLanes()
+        {
+            return m_laserLanes;
+        }
+    };
+
+}

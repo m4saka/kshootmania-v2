@@ -1,112 +1,117 @@
 #include "note_builder.hpp"
 
-AbstractNoteBuilder::AbstractNoteBuilder()
-    : m_preparedNotePos(0)
-    , m_preparedNoteLength(0)
-    , m_notePrepared(false)
+namespace ksh
 {
-}
 
-AbstractNoteBuilder::~AbstractNoteBuilder()
-{
-}
-
-void AbstractNoteBuilder::resetPreparedNote()
-{
-    m_notePrepared = false;
-}
-
-void AbstractNoteBuilder::extendPreparedNoteLength(Measure diff)
-{
-    m_preparedNoteLength += diff;
-}
-
-BTNoteBuilder::BTNoteBuilder(Lane<BTNote> & lane)
-    : m_lane(lane)
-{
-}
-
-void BTNoteBuilder::addPreparedNote()
-{
-    if (m_notePrepared)
+    AbstractNoteBuilder::AbstractNoteBuilder()
+        : m_preparedNotePos(0)
+        , m_preparedNoteLength(0)
+        , m_notePrepared(false)
     {
-        m_lane.emplace(m_preparedNotePos, BTNote(m_preparedNoteLength, m_preparedNotePos, m_preparedNoteHalvesCombo));
+    }
+
+    AbstractNoteBuilder::~AbstractNoteBuilder()
+    {
+    }
+
+    void AbstractNoteBuilder::resetPreparedNote()
+    {
         m_notePrepared = false;
     }
-}
 
-void BTNoteBuilder::prepareNote(Measure pos, bool halvesCombo)
-{
-    if (!m_notePrepared)
+    void AbstractNoteBuilder::extendPreparedNoteLength(Measure diff)
     {
-        m_notePrepared = true;
-        m_preparedNotePos = pos;
-        m_preparedNoteLength = 0;
-        m_preparedNoteHalvesCombo = halvesCombo;
+        m_preparedNoteLength += diff;
     }
-}
 
-FXNoteBuilder::FXNoteBuilder(Lane<FXNote> & lane)
-    : m_lane(lane)
-{
-}
-
-void FXNoteBuilder::addPreparedNote()
-{
-    if (m_notePrepared)
+    BTNoteBuilder::BTNoteBuilder(Lane<BTNote> & lane)
+        : m_lane(lane)
     {
-        m_lane.emplace(m_preparedNotePos, FXNote(m_preparedNoteLength, m_preparedNoteAudioEffectStr, m_preparedNoteAudioEffectParamStr, m_preparedNotePos, m_preparedNoteHalvesCombo));
-        m_notePrepared = false;
     }
-}
 
-void FXNoteBuilder::prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffectStr, const std::string & audioEffectParamStr, bool isEditor)
-{
-    if (!m_notePrepared && (!isEditor || audioEffectStr != m_preparedNoteAudioEffectStr || audioEffectParamStr != m_preparedNoteAudioEffectParamStr))
+    void BTNoteBuilder::addPreparedNote()
     {
-        addPreparedNote();
-        m_notePrepared = true;
-        m_preparedNotePos = pos;
-        m_preparedNoteLength = 0;
-        m_preparedNoteHalvesCombo = halvesCombo;
-        m_preparedNoteAudioEffectStr = audioEffectStr;
+        if (m_notePrepared)
+        {
+            m_lane.emplace(m_preparedNotePos, BTNote(m_preparedNoteLength, m_preparedNotePos, m_preparedNoteHalvesCombo));
+            m_notePrepared = false;
+        }
     }
-}
 
-LaserNoteBuilder::LaserNoteBuilder(Lane<LaserNote> & lane)
-    : m_lane(lane)
-{
-}
-
-void LaserNoteBuilder::addPreparedNote(int preparedNoteLaserEndX)
-{
-    if (m_notePrepared)
+    void BTNoteBuilder::prepareNote(Measure pos, bool halvesCombo)
     {
-        m_lane.emplace(
-            m_preparedNotePos,
-            LaserNote(
-                m_preparedNoteLength,
-                m_preparedNoteLaserStartX,
-                preparedNoteLaserEndX,
+        if (!m_notePrepared)
+        {
+            m_notePrepared = true;
+            m_preparedNotePos = pos;
+            m_preparedNoteLength = 0;
+            m_preparedNoteHalvesCombo = halvesCombo;
+        }
+    }
+
+    FXNoteBuilder::FXNoteBuilder(Lane<FXNote> & lane)
+        : m_lane(lane)
+    {
+    }
+
+    void FXNoteBuilder::addPreparedNote()
+    {
+        if (m_notePrepared)
+        {
+            m_lane.emplace(m_preparedNotePos, FXNote(m_preparedNoteLength, m_preparedNoteAudioEffectStr, m_preparedNoteAudioEffectParamStr, m_preparedNotePos, m_preparedNoteHalvesCombo));
+            m_notePrepared = false;
+        }
+    }
+
+    void FXNoteBuilder::prepareNote(Measure pos, bool halvesCombo, const std::string & audioEffectStr, const std::string & audioEffectParamStr, bool isEditor)
+    {
+        if (!m_notePrepared && (!isEditor || audioEffectStr != m_preparedNoteAudioEffectStr || audioEffectParamStr != m_preparedNoteAudioEffectParamStr))
+        {
+            addPreparedNote();
+            m_notePrepared = true;
+            m_preparedNotePos = pos;
+            m_preparedNoteLength = 0;
+            m_preparedNoteHalvesCombo = halvesCombo;
+            m_preparedNoteAudioEffectStr = audioEffectStr;
+        }
+    }
+
+    LaserNoteBuilder::LaserNoteBuilder(Lane<LaserNote> & lane)
+        : m_lane(lane)
+    {
+    }
+
+    void LaserNoteBuilder::addPreparedNote(int preparedNoteLaserEndX)
+    {
+        if (m_notePrepared)
+        {
+            m_lane.emplace(
                 m_preparedNotePos,
-                m_preparedNoteHalvesCombo,
-                m_preparedLaneSpin));
+                LaserNote(
+                    m_preparedNoteLength,
+                    m_preparedNoteLaserStartX,
+                    preparedNoteLaserEndX,
+                    m_preparedNotePos,
+                    m_preparedNoteHalvesCombo,
+                    m_preparedLaneSpin));
 
-        m_notePrepared = false;
+            m_notePrepared = false;
+        }
     }
-}
 
-void LaserNoteBuilder::prepareNote(Measure pos, bool halvesCombo, int laserStartX)
-{
-    m_notePrepared = true;
-    m_preparedNotePos = pos;
-    m_preparedNoteLength = 0;
-    m_preparedNoteHalvesCombo = halvesCombo;
-    m_preparedNoteLaserStartX = laserStartX;
-    m_preparedLaneSpin = LaneSpin();
-}
+    void LaserNoteBuilder::prepareNote(Measure pos, bool halvesCombo, int laserStartX)
+    {
+        m_notePrepared = true;
+        m_preparedNotePos = pos;
+        m_preparedNoteLength = 0;
+        m_preparedNoteHalvesCombo = halvesCombo;
+        m_preparedNoteLaserStartX = laserStartX;
+        m_preparedLaneSpin = LaneSpin();
+    }
 
-void LaserNoteBuilder::prepareLaneSpin(const LaneSpin & laneSpin)
-{
-    m_preparedLaneSpin = laneSpin;
+    void LaserNoteBuilder::prepareLaneSpin(const LaneSpin & laneSpin)
+    {
+        m_preparedLaneSpin = laneSpin;
+    }
+
 }

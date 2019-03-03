@@ -3,19 +3,24 @@
 #include "note.hpp"
 #include "lane_spin.hpp"
 
-struct LaserNote final : public AbstractNote
+namespace ksh
 {
-public:
-    double startX;
-    double endX;
-    LaneSpin laneSpin;
 
-    LaserNote(Measure length, double startX, double endX, Measure posForJudgmentAlignment = 0, bool halvesCombo = false, const LaneSpin & laneSpin = LaneSpin());
-
-    bool isSlam() const
+    struct LaserNote final : public AbstractNote
     {
-        return length <= UNIT_MEASURE / 32;
-    }
+    public:
+        double startX;
+        double endX;
+        LaneSpin laneSpin;
 
-    static int charToLaserX(unsigned char c);
-};
+        LaserNote(Measure length, double startX, double endX, Measure posForJudgmentAlignment = 0, bool halvesCombo = false, const LaneSpin & laneSpin = LaneSpin());
+
+        bool isSlam() const
+        {
+            return length <= UNIT_MEASURE / 32;
+        }
+
+        static int charToLaserX(unsigned char c);
+    };
+
+}
