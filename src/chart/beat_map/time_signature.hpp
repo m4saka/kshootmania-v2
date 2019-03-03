@@ -4,7 +4,7 @@
 
 // Musical time (UNIT_MEASURE = one measure)
 using Measure = int64_t;
-constexpr Measure UNIT_MEASURE = 96000;
+constexpr Measure UNIT_MEASURE = 240 * 4;
 
 struct TimeSignature
 {
