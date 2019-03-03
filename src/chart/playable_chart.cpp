@@ -1,10 +1,10 @@
-#include "playable_chart.h"
+#include "playable_chart.hpp"
 
 #include <cstddef>
 #include <cstdint>
 #include <cassert>
 
-#include "note_builder.h"
+#include "note_builder.hpp"
 
 constexpr unsigned char OPTION_SEPARATOR = '=';
 constexpr unsigned char BLOCK_SEPARATOR = '|';

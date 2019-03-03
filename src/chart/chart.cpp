@@ -1,4 +1,4 @@
-#include "chart.h"
+#include "chart.hpp"
 
 #include <sstream>
 #include <cassert>

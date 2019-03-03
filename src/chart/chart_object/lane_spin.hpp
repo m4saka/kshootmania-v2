@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "../beat_map/time_signature.h"
+#include "../beat_map/time_signature.hpp"
 
 struct LaneSpin
 {

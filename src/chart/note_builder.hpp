@@ -3,10 +3,10 @@
 #include <string>
 #include <cstddef>
 
-#include "playable_chart.h"
-#include "chart_object/bt_note.h"
-#include "chart_object/fx_note.h"
-#include "chart_object/laser_note.h"
+#include "playable_chart.hpp"
+#include "chart_object/bt_note.hpp"
+#include "chart_object/fx_note.hpp"
+#include "chart_object/laser_note.hpp"
 
 // Temporary class for inserting notes to the lane
 class AbstractNoteBuilder

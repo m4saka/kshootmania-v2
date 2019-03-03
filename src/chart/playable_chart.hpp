@@ -6,12 +6,12 @@
 #include <memory>
 #include <cstddef>
 
-#include "chart.h"
-#include "beat_map/beat_map.h"
-#include "chart_object/bt_note.h"
-#include "chart_object/fx_note.h"
-#include "chart_object/laser_note.h"
-#include "chart_object/line_graph.h"
+#include "chart.hpp"
+#include "beat_map/beat_map.hpp"
+#include "chart_object/bt_note.hpp"
+#include "chart_object/fx_note.hpp"
+#include "chart_object/laser_note.hpp"
+#include "chart_object/line_graph.hpp"
 
 template <class Note>
 using Lane = std::multimap<Measure, Note>;

@@ -1,4 +1,4 @@
-#include "note_builder.h"
+#include "note_builder.hpp"
 
 AbstractNoteBuilder::AbstractNoteBuilder()
     : m_preparedNotePos(0)

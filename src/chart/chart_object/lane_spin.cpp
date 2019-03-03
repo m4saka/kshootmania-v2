@@ -1,6 +1,6 @@
-#include "lane_spin.h"
+#include "lane_spin.hpp"
 
-#include "../beat_map/time_signature.h"
+#include "../beat_map/time_signature.hpp"
 
 Measure kshLengthToMeasure(const std::string & str)
 {

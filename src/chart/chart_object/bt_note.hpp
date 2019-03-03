@@ -1,6 +1,6 @@
 #pragma once
 
-#include "note.h"
+#include "note.hpp"
 
 struct BTNote final : public AbstractNote
 {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "playable_chart.h"
+#include "playable_chart.hpp"
 
 // Chart (header & body)
 class EditableChart : public PlayableChart

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "note.h"
-#include "lane_spin.h"
+#include "note.hpp"
+#include "lane_spin.hpp"
 
 struct LaserNote final : public AbstractNote
 {

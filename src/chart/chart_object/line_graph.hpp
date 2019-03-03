@@ -4,7 +4,7 @@
 #include <string>
 #include <cstddef>
 
-#include "../beat_map/time_signature.h"
+#include "../beat_map/time_signature.hpp"
 
 class LineGraph
 {

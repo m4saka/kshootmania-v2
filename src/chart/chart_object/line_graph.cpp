@@ -1,4 +1,4 @@
-#include "line_graph.h"
+#include "line_graph.hpp"
 #include <ios>
 #include <sstream>
 

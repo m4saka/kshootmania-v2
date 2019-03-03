@@ -3,7 +3,7 @@
 #include <map>
 #include <cstdint>
 
-#include "time_signature.h"
+#include "time_signature.hpp"
 
 // Millisecond
 using Ms = double;
