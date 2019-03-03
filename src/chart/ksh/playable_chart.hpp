@@ -7,11 +7,11 @@
 #include <cstddef>
 
 #include "chart.hpp"
-#include "beat_map/beat_map.hpp"
-#include "chart_object/bt_note.hpp"
-#include "chart_object/fx_note.hpp"
-#include "chart_object/laser_note.hpp"
-#include "chart_object/line_graph.hpp"
+#include "../beat_map/beat_map.hpp"
+#include "../chart_object/bt_note.hpp"
+#include "../chart_object/fx_note.hpp"
+#include "../chart_object/laser_note.hpp"
+#include "../chart_object/line_graph.hpp"
 
 namespace ksh
 {

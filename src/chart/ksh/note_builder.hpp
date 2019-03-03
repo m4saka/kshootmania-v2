@@ -4,9 +4,9 @@
 #include <cstddef>
 
 #include "playable_chart.hpp"
-#include "chart_object/bt_note.hpp"
-#include "chart_object/fx_note.hpp"
-#include "chart_object/laser_note.hpp"
+#include "../chart_object/bt_note.hpp"
+#include "../chart_object/fx_note.hpp"
+#include "../chart_object/laser_note.hpp"
 
 namespace ksh
 {
