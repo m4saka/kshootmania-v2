@@ -1,10 +1,12 @@
 #include "game/game_system.hpp"
 
-GameSystem::GameSystem(const GameSettings & settings)
-    : m_settings(settings)
+GameSystem::GameSystem(const GameSettings & settings, double initialMs)
+    : m_prevMs(initialMs)
+    , m_settings(settings)
 {
 }
 
-void GameSystem::update()
+void GameSystem::update(double currentMs)
 {
+    m_prevMs = currentMs;
 }
