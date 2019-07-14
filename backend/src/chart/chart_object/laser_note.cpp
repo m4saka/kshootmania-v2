@@ -1,4 +1,4 @@
-#include "laser_note.hpp"
+#include "chart/chart_object/laser_note.hpp"
 
 constexpr int LASER_X_MAX = 1000;
 

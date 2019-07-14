@@ -3,9 +3,9 @@
 #include <map>
 #include <cstddef>
 
-#include "../beat_map/beat_map.hpp"
-#include "musical_segment.hpp"
-#include "note_judgment.hpp"
+#include "chart/beat_map/beat_map.hpp"
+#include "chart/chart_object/abstract_musical_segment.hpp"
+#include "chart/chart_object/note_judgment.hpp"
 
 struct AbstractNote : public AbstractMusicalSegment
 {

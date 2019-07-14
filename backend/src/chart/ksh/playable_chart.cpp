@@ -1,10 +1,10 @@
-#include "playable_chart.hpp"
+#include "chart/ksh/playable_chart.hpp"
 
 #include <cstddef>
 #include <cstdint>
 #include <cassert>
 
-#include "note_builder.hpp"
+#include "chart/ksh/note_builder.hpp"
 
 namespace ksh
 {

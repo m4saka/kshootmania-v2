@@ -1,6 +1,6 @@
 #pragma once
 
-#include "playable_chart.hpp"
+#include "chart/ksh/playable_chart.hpp"
 
 namespace ksh
 {

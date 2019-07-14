@@ -3,10 +3,10 @@
 #include <string>
 #include <cstddef>
 
-#include "playable_chart.hpp"
-#include "../chart_object/bt_note.hpp"
-#include "../chart_object/fx_note.hpp"
-#include "../chart_object/laser_note.hpp"
+#include "chart/ksh/playable_chart.hpp"
+#include "chart/chart_object/bt_note.hpp"
+#include "chart/chart_object/fx_note.hpp"
+#include "chart/chart_object/laser_note.hpp"
 
 namespace ksh
 {

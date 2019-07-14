@@ -2,7 +2,7 @@
 
 #include <string>
 
-#include "note.hpp"
+#include "chart/chart_object/abstract_note.hpp"
 
 struct FXNote final : public AbstractNote
 {
