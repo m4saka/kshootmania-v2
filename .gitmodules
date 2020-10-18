@@ -1,3 +1,6 @@
 [submodule "third_party/ksh"]
 	path = third_party/ksh
 	url = https://github.com/m4saka/ksh.git
+[submodule "third_party/ksmcore-dll"]
+	path = third_party/ksmcore-dll
+	url = https://github.com/m4saka/ksmcore-dll
